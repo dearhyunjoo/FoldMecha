@@ -135,7 +135,7 @@ function draw() {
     wingX = 0
     wingY = 0
 
-    Bird1.compBird(wingX,wingY,gearSize_wing_R, gearSize_wing, motorType_wing)
+    Bird1.compBird(wingX,wingY,gearSize_wing, motorType_wing)
 
     Panel.initUI()
     Panel.putText_Wings(UI_wing)

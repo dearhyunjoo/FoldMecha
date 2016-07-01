@@ -2,25 +2,34 @@ function Bird(){
 
 this.driverM = color(0)
 this.drivenM = color(255)
+this.radius= 64
+
+this.rotation_interlock = PI+.21 //temp
+this.in_gear = this.radius-27 //temp
 
 this.rotationAngle=0
-this.rotationAngle_R=0
-this.angle_increase = 0.015
-this.angle_increase_R = 0.015
 
+this.a = 0
+this.b = 0
+//*********
+
+this.angle_increase = 0.015
+this.minNumberOfTeeth=3
+this.maxNumberOfTeeth=30
 this.centergearX=width/2+70
 this.centergearY=height/2+80
 
 this.UI1_created = false
 this.noDraw = 0
 
+
 this.init = function(){
 
    this.t2 = new Turtle()
    this.dist_a = 200
    this.dist_b = 150
-   this.dist_c = 300
-   this.dist_d = 100
+   this.dist_d = 300
+   this.dist_c = 100
    this.dist_e = 350
    this.dist_f = 380
 
@@ -31,10 +40,10 @@ this.init = function(){
    this.dist_aMax = 400
    this.dist_bMin = 0
    this.dist_bMax = 400
-   this.dist_cMin = 0
-   this.dist_cMax = 400
    this.dist_dMin = 0
    this.dist_dMax = 400
+   this.dist_cMin = 0
+   this.dist_cMax = 400
    this.dist_eMin = 0
    this.dist_eMax = 400
    this.dist_fMin = 0
@@ -55,20 +64,20 @@ this.init = function(){
      this.wing_topLengthX = 18
      this.wing_topLengthY = 0
 
-     this.step1_a = sq(this.dist_b) + sq(this.dist_c) - sq(this.dist_a)
-     this.step2_a = 2*this.dist_b*this.dist_c
+     this.step1_a = sq(this.dist_b) + sq(this.dist_d) - sq(this.dist_a)
+     this.step2_a = 2*this.dist_b*this.dist_d
      this.angle_cosine_a = this.step1_a/this.step2_a
      this.step3_a = acos(this.angle_cosine_a)
      this.angle_a = degrees(this.step3_a)
 
-     this.step1_c2 = sq(this.dist_d) + sq(this.dist_e) - sq(this.dist_c)
-     this.step2_c2 = 2*this.dist_d*this.dist_e
-     this.angle_cosine_c2 = this.step1_c2/this.step2_c2
-     this.step3_c2 = acos(this.angle_cosine_c2)
-     this.angle_c2 = degrees(this.step3_c2)
+     this.step1_d2 = sq(this.dist_c) + sq(this.dist_e) - sq(this.dist_d)
+     this.step2_d2 = 2*this.dist_c*this.dist_e
+     this.angle_cosine_d2 = this.step1_d2/this.step2_d2
+     this.step3_d2 = acos(this.angle_cosine_d2)
+     this.angle_d2 = degrees(this.step3_d2)
 
-     this.step1_e = sq(this.dist_c) + sq(this.dist_d) - sq(this.dist_e)
-     this.step2_e = 2*this.dist_c*this.dist_d
+     this.step1_e = sq(this.dist_d) + sq(this.dist_c) - sq(this.dist_e)
+     this.step2_e = 2*this.dist_d*this.dist_c
      this.angle_cosine_e = this.step1_e/this.step2_e
      this.step3_e = acos(this.angle_cosine_e)
      this.angle_e = degrees(this.step3_e)
@@ -78,8 +87,8 @@ this.init = function(){
      this.t1.left(90*side)
      this.t1.forward((this.wing_axisX+this.wing_topLengthX*side)*side)
 
-     this.c2_x = this.t1.x
-     this.c2_y = this.t1.y      // point C2: where the wing starting point.
+     this.d2_x = this.t1.x
+     this.d2_y = this.t1.y      // point d2: where the wing starting point.
 
      var leftTurn = this.angle_f + this.angle_x
 
@@ -91,8 +100,8 @@ this.init = function(){
      this.b_y = this.t1.y    // point B: the edge of the wing
 
      this.t1.back(this.dist_e)
-     this.t1.right(this.angle_c2*side)
-     this.t1.forward(this.dist_d)
+     this.t1.right(this.angle_d2*side)
+     this.t1.forward(this.dist_c)
 
      this.a_x = this.t1.x
      this.a_y = this.t1.y    // point A: headside triangle
@@ -107,8 +116,8 @@ this.init = function(){
      this.t1.back(this.dist_b)
      this.t1.right((180-(this.angle_a+this.angle_e))*side)
 
-     this.t1.back(this.dist_d)
-     this.t1.left(this.angle_c2*side)
+     this.t1.back(this.dist_c)
+     this.t1.left(this.angle_d2*side)
 
      this.t1.right((180-leftTurn)*side)
      this.t1.left(90*side)
@@ -123,13 +132,13 @@ this.init = function(){
      push()
      translate(centerPositionX,centerPositionY)
      var rad = -.11 // due to some mismatch
-     this.dist_g = dist(len*cos(theta+rad), len*sin(theta+rad), this.c2_x-centerPositionX, this.c2_y-centerPositionY)
+     this.dist_g = dist(len*cos(theta+rad), len*sin(theta+rad), this.d2_x-centerPositionX, this.d2_y-centerPositionY)
 
      this.pinion_Xdot = len*cos(theta+rad)
      this.pinion_Ydot = len*sin(theta+rad)
 
-     this.dist_x = abs(this.c2_x-centerPositionX-this.pinion_Xdot)
-     this.dist_y = abs(this.c2_y-centerPositionY-this.pinion_Ydot)
+     this.dist_x = abs(this.d2_x-centerPositionX-this.pinion_Xdot)
+     this.dist_y = abs(this.d2_y-centerPositionY-this.pinion_Ydot)
 
      this.step1_x = sq(this.dist_y) + sq(this.dist_g) - sq(this.dist_x)
      this.step2_x = 2*this.dist_y*this.dist_g
@@ -137,10 +146,10 @@ this.init = function(){
      this.step3_x =acos(this.angle_cosine_x)
      this.angle_x =degrees(this.step3_x)
 
-     stroke(color(blue2))
+     stroke(blue2)
      line(this.pinion_Xdot,this.pinion_Ydot,this.b_x-centerPositionX,this.b_y-centerPositionY) // side f
      noStroke()
-     fill(color(blue2))
+     fill(blue2)
      ellipse(this.pinion_Xdot,this.pinion_Ydot, 8,8) //moving pivot on gears
 
      pop()
@@ -151,68 +160,62 @@ this.init = function(){
      this.step3_f =acos(this.angle_cosine_f)
      this.angle_f =degrees(this.step3_f)
 
-     stroke(color(blue2))
-     line(this.a_x,this.a_y,this.c2_x,this.c2_y) // side d
+     stroke(blue2)
+     line(this.a_x,this.a_y,this.d2_x,this.d2_y) // side c
      noStroke()
-     fill(color(blue2))
+     fill(blue2)
      triangle(this.a_x, this.a_y, this.b_x, this.b_y, this.c_x, this.c_y) //side a,b,c
      fill(0)
-     ellipse(this.c2_x,this.c2_y,8,8)
+     ellipse(this.d2_x,this.d2_y,8,8)
   }
 
-  this.compBird = function(startingX,startingY,gear_size_R,gear_size,motorType){
+  this.compBird = function(startingX,startingY,gear_setting,gearSize_wing,motorType){
+    //this.noDraw = x
+    if (gear_setting == 1){
+      this.motorA = this.driverM
+      this.motorB = this.drivenM
+    } else if (gear_setting == 0){
+      this.motorB = this.driverM
+      this.motorA = this.drivenM
+    }
 
-    if(gear_size ==1){
+    if(gearSize_wing ==1){
       this.radius= 48
       this.in_gear = this.radius-22
-    }else if(gear_size ==2){
+    }else if(gearSize_wing ==2){
       this.radius= 56
       this.in_gear = this.radius-25
-    }else if(gear_size ==3){
+    }else if(gearSize_wing ==3){
       this.radius= 64
       this.in_gear = this.radius-27
-    }else if(gear_size ==4){
+    }else if(gearSize_wing ==4){
       this.radius= 72
       this.in_gear = this.radius-32
     }
 
-    if(gear_size_R ==1){
-      this.radius_R= 48
-      this.in_gear = this.radius_R-22
-    }else if(gear_size_R ==2){
-      this.radius_R= 56
-      this.in_gear = this.radius_R-25
-    }else if(gear_size_R ==3){
-      this.radius_R= 64
-      this.in_gear = this.radius_R-27
-    }else if(gear_size_R ==4){
-      this.radius_R= 72
-      this.in_gear = this.radius_R-32
-    }
-//this.rotationAngle = 0
-
+    this.motor_status = motorType
 
     /* TO DRAW LEFT GEAR */
     this.centerPositionX=this.centergearX + startingX
     this.centerPositionY=this.centergearY + startingY
     this.rotationDirection = 1
-    this.drawGear(this.radius, startingX,startingY, this.centerPositionX, this.centerPositionY, this.rotationDirection,motorType)
+    this.gear_status = this.motorA
+    this.drawGear(this.radius, startingX,startingY, this.centerPositionX, this.centerPositionY, this.rotationDirection,this.gear_status,this.motor_status)
 
     /* TO DRAW RIGHT GEAR*/
-    var teethHeight_R=0.25*this.radius_R
-
-    this.centerPositionX=this.centergearX+(this.radius+this.radius_R+1/2*(this.teethHeight+teethHeight_R))+startingX
+    this.centerPositionX=this.centergearX+(this.radius*2+this.teethHeight) + startingX
     this.rotationDirection = -1
-    this.drawGear(this.radius_R, startingX,startingY, this.centerPositionX, this.centerPositionY, this.rotationDirection,motorType)
+    this.gear_status = this.motorB
+    this.drawGear(this.radius, startingX,startingY, this.centerPositionX, this.centerPositionY, this.rotationDirection,this.gear_status,this.motor_status)
+
 
  }
 
-  this.drawGear = function(radius, startingX,startingY,centerPositionX, centerPositionY,rotationDirection,motor_status){
+  this.drawGear = function(radius, startingX,startingY,centerPositionX, centerPositionY,rotationDirection,gear_status,motor_status){
 
-    this.teethHeight=0.25*radius
+    this.teethHeight=0.25*this.radius
     this.numberOfTeeth=radius/4
-  //  this.teethAngle=TWO_PI/12
-
+    this.numberOfTeeth=constrain(this.numberOfTeeth, this.minNumberOfTeeth, this.maxNumberOfTeeth)
     this.teethAngle=TWO_PI/this.numberOfTeeth
     this.teethWidth=sin(this.teethAngle/2)*radius
     this.lineY=cos(this.teethAngle/2)*radius+this.teethHeight
@@ -221,22 +224,19 @@ this.init = function(){
       this.rotation_interlock = 0
     }else if(this.rotationDirection == -1){   //right gear
 
-      this.rotation_interlock = 0
-/*      if(radius == 48){    //  gear size 1
-        this.rotation_interlock = (radius*2/5)-3.22
-      }else if(radius ==56){   //  gear size 2
-        this.rotation_interlock = (radius*2/5)-.17
-      }else if(radius ==64){   //  gear size 3
+      if(this.radius == 48){    //  gear size 1
+        this.rotation_interlock = (this.radius*2/5)-3.22
+      }else if(this.radius ==56){   //  gear size 2
+        this.rotation_interlock = (this.radius*2/5)-.17
+      }else if(this.radius ==64){   //  gear size 3
         this.rotation_interlock = PI+.21
-      }else if(radius ==72){   //  gear size 4
+      }else if(this.radius ==72){   //  gear size 4
         this.rotation_interlock = PI+.18
-      }*/
+      }
    }
 
     push()
     translate(centerPositionX, centerPositionY)
-
-if(rotationDirection == 1){  // left gear
     rotate(this.rotationAngle*rotationDirection+this.rotation_interlock)
     this.rotationAngle = this.rotationAngle + this.angle_increase
 
@@ -246,32 +246,12 @@ if(rotationDirection == 1){  // left gear
 
       if (this.rotationAngle == PI || this.rotationAngle == 0){
         this.angle_increase = this.angle_increase * -1
-        this.angle_increase_R = this.angle_increase_R * -1
       }
     }else if (motor_status == 360){
       if (this.rotationAngle >= 2*PI){
           this.rotationAngle = 0
       }
     }
-}else if(rotationDirection == -1){     // right gear
-
-    rotate(this.rotationAngle_R*rotationDirection+this.rotation_interlock)
-    this.rotationAngle_R = this.rotationAngle_R + this.angle_increase_R
-
-    if(motor_status == 180){
-
-  /*    if (this.rotationAngle >PI){ this.rotationAngle = PI }
-      else if (this.rotationAngle <0){ this.rotationAngle = 0 }
-      if (this.rotationAngle == PI || this.rotationAngle == 0){
-        this.angle_increase = this.angle_increase * -1
-      }*/
-
-    }else if (motor_status == 360){
-      if (this.rotationAngle_R >= 2*PI){
-          this.rotationAngle_R = 0
-      }
-    }
-}
 
      fill(150)
     for (var i=0; i<this.numberOfTeeth; i++)
@@ -287,16 +267,15 @@ if(rotationDirection == 1){  // left gear
     }
     ellipse(0, 0, 2*(-this.lineY+this.teethHeight), 2*(-this.lineY+this.teethHeight)) //gear flesh
 
-    stroke(color(blue2))
-    strokeWeight(5)
-    fill(0)
+    fill(0)//center
     ellipse(0,0,20,20)
 
     pop()
-  //  this.drawWing(startingX, startingY, centerPositionX,centerPositionY,rotationDirection)
+
+    this.drawWing(startingX, startingY, centerPositionX,centerPositionY,rotationDirection)
   }
 
-  this.UI_Gear = function(radius, centerPositionX, centerPositionY){
+  this.drawGear2 = function(radius, centerPositionX, centerPositionY){
 
     this.teethHeight=0.35*radius
     this.numberOfTeeth=radius/2
@@ -342,14 +321,15 @@ if(rotationDirection == 1){  // left gear
 
       text("A", 60,35)
       text("B", 140,20)
-      text("C", 110,62)
-      text("D", 188, 50)
+      text("D", 110,62)
+      text("C", 188, 50)
       text("E", 140, 87)
       text("F", 100, 120)
 
       rect(190,120,15,20)
       fill(255)
       text("1", 193, 135)
+
       noFill()
       stroke(0)
       rect(210,120,15,20)
@@ -358,7 +338,7 @@ if(rotationDirection == 1){  // left gear
 
     }else if (UI_mode == 2){
 
-      this.UI_Gear(28, 120,142)
+      this.drawGear2(28, 120,142)
 
       stroke(150)
       line(37,-70,80,-70)   // side X
@@ -395,9 +375,9 @@ if(rotationDirection == 1){  // left gear
     }
   }
 
-  this.drawNet = function(pair_wing,gearSize_wing,Flapping_map_page,Lthick,driver,motor_embed){
+  this.drawNet = function(gearSize_wing,Flapping_map_page,Lthick,driver,motor_embed){
 //    var part = createCanvas(temp_windowWidth,temp_windowHeight-515)
-    this.a = pair_wing
+  //  this.a = pair_wing
     this.b = gearSize_wing
 
     var radiusN = 8*(5+gearSize_wing)
@@ -425,7 +405,7 @@ if(rotationDirection == 1){  // left gear
       stroke(0)
       fill(255)
 
-      if(pair_wing == 0){
+  /*    if(pair_wing == 0){
 
         translate(100, 100)
         for (var i=0; i<this.numberOfTeeth; i++){
@@ -563,7 +543,7 @@ if(rotationDirection == 1){  // left gear
         ellipse(60*-1+this.dist_f,120,20,20)
         ellipse(60*-1,180,20,20)
         ellipse(60*-1+this.dist_f,180,20,20)
-      }
+      }*/
     }else if(Flapping_map_page == 2){
 
         var case_pos_X = 30
@@ -621,13 +601,13 @@ if(rotationDirection == 1){  // left gear
     }else if (Flapping_map_page == 3){
   //    thickness = 70 // 50,70,90,110
      if(Lthick == 1){
-      thickness = 55
+      thickness = 45
      }else if(Lthick == 2){
-      thickness = 70
+      thickness = 60
      }else if(Lthick == 3){
-      thickness = 85
+      thickness = 75
      }else if(Lthick == 4){
-      thickness = 100
+      thickness = 90
      }
 
      var stick_pos_Y = 35//20
@@ -637,36 +617,36 @@ if(rotationDirection == 1){  // left gear
       noFill()
       stroke(0)
 //stick 1
-      rect(stick_pos_X,stick_pos_Y,this.xx*2+this.dist_d+this.dist_b+this.dist_a+30+30,thickness)
+      rect(stick_pos_X,stick_pos_Y,this.xx*2+this.dist_c+this.dist_b+this.dist_a+30+30,thickness)
 //stick 2
-      rect(stick_pos_X,stick_pos_Y+stick_Y_gap+thickness,30+30+this.dist_c+this.dist_d+this.xx*2,thickness)    // extra part to fold
+      rect(stick_pos_X,stick_pos_Y+stick_Y_gap+thickness,30+30+this.dist_d+this.dist_c+this.xx*2,thickness)    // extra part to fold
 
       for(var i=stick_pos_Y; i<stick_pos_Y+thickness; i = i+5){
         line(stick_pos_X+this.xx*2,i,stick_pos_X+this.xx*2,i+2) // #1. this.xx
-        line(stick_pos_X+this.xx*2+this.dist_d+this.dist_b+this.dist_a,i,stick_pos_X+this.xx*2+this.dist_d+this.dist_b+this.dist_a,i+2) // #4, dist_a
+        line(stick_pos_X+this.xx*2+this.dist_c+this.dist_b+this.dist_a,i,stick_pos_X+this.xx*2+this.dist_c+this.dist_b+this.dist_a,i+2) // #4, dist_a
       }// stick 1
       for(var i=stick_pos_Y; i<stick_pos_Y+thickness; i = i+11){
-        line(stick_pos_X+this.xx*2+this.dist_d,i,stick_pos_X+this.xx*2+this.dist_d,i+5) //  #2, dist_d
-        line(stick_pos_X+this.xx*2+this.dist_d+this.dist_b,i,stick_pos_X+this.xx*2+this.dist_d+this.dist_b,i+5)  // #3, dist_b
-        line(stick_pos_X+this.xx*2+this.dist_d+this.dist_b+this.dist_a+30,i,stick_pos_X+this.xx*2+this.dist_d+this.dist_b+this.dist_a+30,i+5) // #5, extra
+        line(stick_pos_X+this.xx*2+this.dist_c,i,stick_pos_X+this.xx*2+this.dist_c,i+5) //  #2, dist_d
+        line(stick_pos_X+this.xx*2+this.dist_c+this.dist_b,i,stick_pos_X+this.xx*2+this.dist_c+this.dist_b,i+5)  // #3, dist_b
+        line(stick_pos_X+this.xx*2+this.dist_c+this.dist_b+this.dist_a+30,i,stick_pos_X+this.xx*2+this.dist_c+this.dist_b+this.dist_a+30,i+5) // #5, extra
       }// stick 1
 
       for(var i=stick_pos_Y+stick_Y_gap+thickness; i<stick_pos_Y+stick_Y_gap+thickness*2; i = i+5){
         line(stick_pos_X+30,i,stick_pos_X+30,i+2) // #1. this.xx
-        line(stick_pos_X+30+30+this.dist_c+this.dist_d,i,stick_pos_X+30+30+this.dist_c+this.dist_d,i+2) // #4, dist_a
+        line(stick_pos_X+30+30+this.dist_d+this.dist_c,i,stick_pos_X+30+30+this.dist_d+this.dist_c,i+2) // #4, dist_a
       }// stick 2
       for(var i=stick_pos_Y+stick_Y_gap+thickness; i<stick_pos_Y+stick_Y_gap+thickness*2; i = i+11){
         line(stick_pos_X+30+30,i,stick_pos_X+30+30,i+5) //  #2, dist_d
-        line(stick_pos_X+30+30+this.dist_c,i,stick_pos_X+30+30+this.dist_c,i+5)  // #3, dist_b
+        line(stick_pos_X+30+30+this.dist_d,i,stick_pos_X+30+30+this.dist_d,i+5)  // #3, dist_b
       }// stick 2
 
 //stick 3
-      rect(stick_pos_X,stick_pos_Y+stick_Y_gap*2+thickness*2,this.xx*2+this.dist_d+this.dist_b+this.dist_a+30+30,thickness)
+      rect(stick_pos_X,stick_pos_Y+stick_Y_gap*2+thickness*2,this.xx*2+this.dist_c+this.dist_b+this.dist_a+30+30,thickness)
 //stick 4
-      rect(stick_pos_X,stick_pos_Y+stick_Y_gap*3+thickness*3,30+30+this.dist_c+this.dist_d+this.xx*2,thickness)    // extra part to fold
+      rect(stick_pos_X,stick_pos_Y+stick_Y_gap*3+thickness*3,30+30+this.dist_d+this.dist_c+this.xx*2,thickness)    // extra part to fold
       for(var i=stick_pos_Y+stick_Y_gap*2+thickness*2; i<stick_pos_Y+stick_Y_gap*2+thickness*3; i = i+5){
         line(stick_pos_X+30+30,i,stick_pos_X+30+30,i+2) //  #2, dist_d
-        line(stick_pos_X+30+30+this.dist_a+this.dist_b+this.dist_d,i,stick_pos_X+30+30+this.dist_a+this.dist_b+this.dist_d,i+2) // #5, extra
+        line(stick_pos_X+30+30+this.dist_a+this.dist_b+this.dist_c,i,stick_pos_X+30+30+this.dist_a+this.dist_b+this.dist_c,i+2) // #5, extra
       }// stick 3
       for(var i=stick_pos_Y+stick_Y_gap*2+thickness*2; i<stick_pos_Y+stick_Y_gap*2+thickness*3; i = i+11){
         line(stick_pos_X+30,i,stick_pos_X+30,i+5) // #1. this.xx
@@ -674,12 +654,12 @@ if(rotationDirection == 1){  // left gear
         line(stick_pos_X+30+30+this.dist_a+this.dist_b,i,stick_pos_X+30+30+this.dist_a+this.dist_b,i+5) // #4, dist_a
       }// stick 3
       for(var i=stick_pos_Y+stick_Y_gap*3+thickness*3; i<stick_pos_Y+stick_Y_gap*3+thickness*4; i = i+11){
-         line(stick_pos_X+this.xx*2+this.dist_d,i,stick_pos_X+this.xx*2+this.dist_d,i+5) // #1. this.xx
-         line(stick_pos_X+this.xx*2+this.dist_c+this.dist_d,i,stick_pos_X+this.xx*2+this.dist_c+this.dist_d,i+5) //  #2, dist_d
+         line(stick_pos_X+this.xx*2+this.dist_c,i,stick_pos_X+this.xx*2+this.dist_c,i+5) // #1. this.xx
+         line(stick_pos_X+this.xx*2+this.dist_d+this.dist_c,i,stick_pos_X+this.xx*2+this.dist_d+this.dist_c,i+5) //  #2, dist_d
       }// stick 4
       for(var i=stick_pos_Y+stick_Y_gap*3+thickness*3; i<stick_pos_Y+stick_Y_gap*3+thickness*4; i = i+5){
          line(stick_pos_X+this.xx*2,i,stick_pos_X+this.xx*2,i+2) // #1. this.xx
-         line(stick_pos_X+this.xx*2+this.dist_c+this.dist_d+30,i,stick_pos_X+this.xx*2+this.dist_c+this.dist_d+30,i+2)  // #3, dist_b
+         line(stick_pos_X+this.xx*2+this.dist_d+this.dist_c+30,i,stick_pos_X+this.xx*2+this.dist_d+this.dist_c+30,i+2)  // #3, dist_b
       }// stick 4
 
       textSize(11)
@@ -687,28 +667,28 @@ if(rotationDirection == 1){  // left gear
       noStroke()
       var textY = -5  // where to write #1 ~7 for foldig nets
       text("1", stick_pos_X+(1/2*this.xx*2), stick_pos_Y+thickness+textY)
-      text("2", stick_pos_X+this.xx*2+(1/2*this.dist_d), stick_pos_Y+thickness+textY)
-      text("3", stick_pos_X+this.xx*2+this.dist_d+(1/2*this.dist_b), stick_pos_Y+thickness+textY)
-      text("4", stick_pos_X+this.xx*2+this.dist_d+this.dist_b+(1/2*this.dist_a), stick_pos_Y+thickness+textY)
-      text("A", stick_pos_X+this.xx*2+this.dist_d+this.dist_b+this.dist_a+10, stick_pos_Y+thickness+textY)
-      text("B", stick_pos_X+this.xx*2+this.dist_d+this.dist_b+this.dist_a+40, stick_pos_Y+thickness+textY)
+      text("2", stick_pos_X+this.xx*2+(1/2*this.dist_c), stick_pos_Y+thickness+textY)
+      text("3", stick_pos_X+this.xx*2+this.dist_c+(1/2*this.dist_b), stick_pos_Y+thickness+textY)
+      text("4", stick_pos_X+this.xx*2+this.dist_c+this.dist_b+(1/2*this.dist_a), stick_pos_Y+thickness+textY)
+      text("A", stick_pos_X+this.xx*2+this.dist_c+this.dist_b+this.dist_a+10, stick_pos_Y+thickness+textY)
+      text("B", stick_pos_X+this.xx*2+this.dist_c+this.dist_b+this.dist_a+40, stick_pos_Y+thickness+textY)
 
       text("C", stick_pos_X+10, stick_pos_Y+stick_Y_gap+thickness*2+textY)
       text("D", stick_pos_X+40, stick_pos_Y+stick_Y_gap+thickness*2+textY)
-      text("5", stick_pos_X+30*2+(1/2*this.dist_c), stick_pos_Y+stick_Y_gap+thickness*2+textY)
-      text("6", stick_pos_X+30*2+this.dist_c+(1/2*this.dist_d), stick_pos_Y+stick_Y_gap+thickness*2+textY)
-      text("7", stick_pos_X+30*2+this.dist_c+this.dist_d+(1/2*this.xx*2), stick_pos_Y+stick_Y_gap+thickness*2+textY)
+      text("5", stick_pos_X+30*2+(1/2*this.dist_d), stick_pos_Y+stick_Y_gap+thickness*2+textY)
+      text("6", stick_pos_X+30*2+this.dist_d+(1/2*this.dist_c), stick_pos_Y+stick_Y_gap+thickness*2+textY)
+      text("7", stick_pos_X+30*2+this.dist_d+this.dist_c+(1/2*this.xx*2), stick_pos_Y+stick_Y_gap+thickness*2+textY)
 
       text("B", stick_pos_X+10, stick_pos_Y+stick_Y_gap*2+thickness*3+textY)
       text("A", stick_pos_X+40, stick_pos_Y+stick_Y_gap*2+thickness*3+textY)
       text("4", stick_pos_X+30+30+(1/2*this.dist_a), stick_pos_Y+stick_Y_gap*2+thickness*3+textY)
       text("3", stick_pos_X+30+30+this.dist_a+(1/2*this.dist_b), stick_pos_Y+stick_Y_gap*2+thickness*3+textY)
-      text("2", stick_pos_X+30+30+this.dist_a+this.dist_b+(1/2*this.dist_d), stick_pos_Y+stick_Y_gap*2+thickness*3+textY)
-      text("1", stick_pos_X+30+30+this.dist_a+this.dist_b+this.dist_d+(1/2*this.xx*2), stick_pos_Y+stick_Y_gap*2+thickness*3+textY)
-      text("D", stick_pos_X+this.xx*2+this.dist_d+this.dist_c+10, stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
-      text("C", stick_pos_X+this.xx*2+this.dist_d+this.dist_c+40, stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
-      text("5", stick_pos_X+this.xx*2+this.dist_d+(1/2*this.dist_c), stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
-      text("6", stick_pos_X+this.xx*2+(1/2*this.dist_d), stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
+      text("2", stick_pos_X+30+30+this.dist_a+this.dist_b+(1/2*this.dist_c), stick_pos_Y+stick_Y_gap*2+thickness*3+textY)
+      text("1", stick_pos_X+30+30+this.dist_a+this.dist_b+this.dist_c+(1/2*this.xx*2), stick_pos_Y+stick_Y_gap*2+thickness*3+textY)
+      text("D", stick_pos_X+this.xx*2+this.dist_c+this.dist_d+10, stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
+      text("C", stick_pos_X+this.xx*2+this.dist_c+this.dist_d+40, stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
+      text("5", stick_pos_X+this.xx*2+this.dist_c+(1/2*this.dist_d), stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
+      text("6", stick_pos_X+this.xx*2+(1/2*this.dist_c), stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
       text("7", stick_pos_X+(1/2*this.xx*2), stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
 
     }
@@ -723,8 +703,8 @@ this.drawPNG = function(){
 // get functions
   this.getA = function(){return this.dist_a;}
   this.getB = function(){return this.dist_b;}
-  this.getC = function(){return this.dist_c;}
   this.getD = function(){return this.dist_d;}
+  this.getC = function(){return this.dist_c;}
   this.getE = function(){return this.dist_e;}
   this.getF = function(){return this.dist_f;}
   this.getX = function(){return this.x;}
@@ -746,18 +726,18 @@ this.drawPNG = function(){
     }
       return false
   }
-  this.setC = function(newC){
-    if (newC>this.dist_cMin && newC<this.dist_cMax){
-      this.dist_c = newC
+  this.setD = function(newD){
+    if (newD>this.dist_dMin && newD<this.dist_dMax){
+      this.dist_d = newD
       this.updateSim()
       return true
     }
       return false
   }
-  this.setD = function(newD){
+  this.setC = function(newC){
 
-    if (newD > this.dist_dMin && newD < this.dist_dMax){
-      this.dist_d = newD
+    if (newC > this.dist_cMin && newC < this.dist_cMax){
+      this.dist_c = newC
       this.updateSim()
       return true
     } //need else anyway - if min and max was well defined, this should not happen
@@ -795,23 +775,23 @@ this.drawPNG = function(){
       return false
   }
   this.updateSim = function(){
-    this.dist_aMin = abs(this.dist_b-this.dist_c)+this.lengthGap
-    this.dist_aMax = this.dist_b+this.dist_c-this.lengthGap
+    this.dist_aMin = abs(this.dist_d-this.dist_b)+this.lengthGap
+    this.dist_aMax = this.dist_b+this.dist_d
 
-    this.dist_bMin = abs(this.dist_a-this.dist_c)+this.lengthGap
-    this.dist_bMax = this.dist_a+this.dist_c-this.lengthGap
+    this.dist_bMin = abs(this.dist_a-this.dist_d)+this.lengthGap
+    this.dist_bMax = this.dist_a+this.dist_d
 
-    this.dist_cMin = abs(this.dist_a-this.dist_b)+this.lengthGap
-    this.dist_cMax = this.dist_a+this.dist_b-this.lengthGap
+    this.dist_dMin = abs(this.dist_a-this.dist_b)+this.lengthGap
+    this.dist_dMax = this.dist_a+this.dist_b
 
-    this.dist_dMin = abs(this.dist_c-this.dist_e)+this.lengthGap
-    this.dist_dMax = this.dist_c+this.dist_e-this.lengthGap
+    this.dist_cMin = 0
+    this.dist_cMax = 400
 
-    this.dist_eMin = abs(this.dist_c-this.dist_d)+this.lengthGap
-    this.dist_eMax = this.dist_c+this.dist_d-this.lengthGap
+    this.dist_eMin = abs(this.dist_d-this.dist_c)+this.lengthGap
+    this.dist_eMax = this.dist_d+this.dist_c
 
     this.dist_fMin = abs(this.dist_e-this.dist_g)+this.lengthGap
-    this.dist_fMax = this.dist_e+this.dist_g-this.lengthGap
+    this.dist_fMax = this.dist_e+this.dist_g
 
     return true
   }

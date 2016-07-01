@@ -867,27 +867,25 @@ function UI(){
 
   this.button_Wings = function(){
 
-    if(_this.currentPairing == 0){ // cancel pairing
-      _this.mirr_apply.show().position(138,315).style("background-color",white)
-      _this.mirr_cancel.show().position(190,315).style("background-color",blue)
+    _this.size_1.show().position(115,375)
+    _this.size_2.show().position(150,375)
+    _this.size_3.show().position(185,375)
+    _this.size_4.show().position(220,375)
 
-    }else if(_this.currentPairing == 1){  // paired!
-      _this.mirr_apply.show().position(138,315).style("background-color",blue)
-      _this.mirr_cancel.show().position(190,315).style("background-color",white)
+    _this.mtr180.show().position(50, 430)//.style("background-color",blue)
+    _this.mtr360.show().position(140, 430)//.style("background-color",white)
 
-    }
+    // _this.size_1.show().position(120,325)
+    // _this.size_2.show().position(155,325)
+    // _this.size_3.show().position(190,325)
+    // _this.size_4.show().position(225,325)
+    // _this.size_1_R.show().position(120,355)
+    // _this.size_2_R.show().position(155,355)
+    // _this.size_3_R.show().position(190,355)
+    // _this.size_4_R.show().position(225,355)
 
-    _this.size_1.show().position(120,325)
-    _this.size_2.show().position(155,325)
-    _this.size_3.show().position(190,325)
-    _this.size_4.show().position(225,325)
-    _this.size_1_R.show().position(120,355)
-    _this.size_2_R.show().position(155,355)
-    _this.size_3_R.show().position(190,355)
-    _this.size_4_R.show().position(225,355)
-
-    _this.mtr180.show().position(50, 410)//.style("background-color",blue)
-    _this.mtr360.show().position(140, 410)//.style("background-color",white)
+    // _this.mtr180.show().position(50, 410)//.style("background-color",blue)
+    // _this.mtr360.show().position(140, 410)//.style("background-color",white)
 
     _this.Btn_reset.show().size(150,20).position(60,520)
 //    _this.Btn_plt.show().size(150,20).position(60,520)
@@ -1184,10 +1182,14 @@ this.button_Planet = function(){
     fill(255)
     text("FLAPPING", 100, 25)
     fill(0)
-    text("L Gear Size :", 20, 340)
-    text("R Gear Size :", 20, 370)
+    // text("L Gear Size :", 20, 340)
+    // text("R Gear Size :", 20, 370)
 
-    text("Motor Rotation Angle :", 20, 400)
+//    text("Motor Rotation Angle :", 20, 400)
+//    text("Rendering :", 20, 480)
+//    text("Model Mirroring :", 20, 330)
+    text("Gear Size :", 20, 390)
+    text("Motor Rotation Angle :", 20, 420)
     text("Rendering :", 20, 480)
 
 
