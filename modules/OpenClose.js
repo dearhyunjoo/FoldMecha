@@ -18,6 +18,9 @@ function OpenClose(){
 
   this.noDraw = false
 
+
+  var testVar = 0
+
   var fixed_up_Y = 100  // start with gear size 2
   var fixed_up_x_adjust = this.radius- this.teethHeight
   var lower_Y = 0
