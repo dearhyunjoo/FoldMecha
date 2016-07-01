@@ -5,6 +5,7 @@ function UI(){
   this.temp_windowHeight = 660
   this.UI_mode = 1 //default
   this.flowerScale = 1
+  this.birdScale  = 1
 
   var _this = this
   var stdSliderValue = [{}] //sketch object to restore slider from/to different module
@@ -252,22 +253,26 @@ function UI(){
   }
   function scale_zoomIn(){
     if(pageMode == 1){
-
       _this.flowerScale += 1
       console.log(_this.flowerScale)
-      scale(1 + _this.flowerScale*0.1) //response to +/- scaling
 
-  //    mul_petal = mul_petal+1/10
-  //    if(mul_petal>13/10){mul_petal=13/10}
     }
-    else if(pageMode == 3){  }
+    else if(pageMode == 3){
+      _this.birdScale += 1
+
+    }
   }
   function scale_zoomOut(){
     if(pageMode == 1){
-  //    mul_petal = mul_petal-1/10
-  //    if(mul_petal<7/10){mul_petal=7/10}
+      if(_this.flowerScale > -4)
+        _this.flowerScale -= 1
+        
+      console.log(_this.flowerScale)
+
     }
-    else if(pageMode == 3){  }
+    else if(pageMode == 3){
+      _this.birdScale -= 1
+    }
   }
   function render_OP_status(){
     // var test = render_OP.value
