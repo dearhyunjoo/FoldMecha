@@ -116,7 +116,10 @@ function draw() {
 
   else if (pageMode == open_close){ //mode 1
 
+    push()
+    scale(1 + Panel.flowerScale*0.1) //response to +/- scaling
     Flower3.compGear(petalX,petalY,pair_petal,gearSize_petal,motorType_petal,render_petal)
+    pop()
 
     Panel.initUI()
 
@@ -135,8 +138,16 @@ function draw() {
     wingX = 0
     wingY = 0
 
+<<<<<<< HEAD
     Bird1.compBird(wingX,wingY,gearSize_wing, motorType_wing)
 
+=======
+    push()
+    scale(1 + Panel.birdScale*0.1) //response to +/- scaling
+    Bird1.compBird(wingX,wingY,gearSize_wing_R, gearSize_wing, motorType_wing)
+    pop()
+    
+>>>>>>> 101ffa0a40a436bb00d73c6484d0cc194a334a24
     Panel.initUI()
     Panel.putText_Wings(UI_wing)
     Panel.button_Wings()
