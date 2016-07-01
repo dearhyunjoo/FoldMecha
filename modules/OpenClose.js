@@ -18,9 +18,6 @@ function OpenClose(){
 
   this.noDraw = false
 
-
-  var testVar = 0
-
   var fixed_up_Y = 100  // start with gear size 2
   var fixed_up_x_adjust = this.radius- this.teethHeight
   var lower_Y = 0
@@ -45,7 +42,7 @@ function OpenClose(){
     _this.rack_Y_reset12 = r12
   }
 
-  this.compGear = function(startingX,startingY,pair_petal,gearSize_petal,motorType,mul_petal,render_petal){
+  this.compGear = function(startingX,startingY,pair_petal,gearSize_petal,motorType,render_petal){
     //pinion gear is circular & rack gear is linear gear
 
     this.render_petal = render_petal
@@ -176,10 +173,10 @@ function OpenClose(){
 // settting where to draw gears
     this.centerPositionY_rack = height/2+200+lower_Y2
     this.centerPositionX_pinion = temp_windowWidth/2+200+startingX
-    this.drawPinionGear(pair_petal,this.radius, this.centerPositionX_pinion+this.centerX, this.centerPositionY_rack,motorType,mul_petal,render_petal)
+    this.drawPinionGear(pair_petal,this.radius, this.centerPositionX_pinion+this.centerX, this.centerPositionY_rack,motorType,render_petal)
 }
 
-  this.drawRackGear = function(pair_petal,radius,centerPositionX_rack,centerPositionY_rack,motorType,mul_petal){
+  this.drawRackGear = function(pair_petal,radius,centerPositionX_rack,centerPositionY_rack,motorType){
 
     this.RlineY=cos(this.teethAngle/2)*radius+this.teethHeight
     this.bottom_w = 25
@@ -201,11 +198,11 @@ function OpenClose(){
        this.gear_Rx3 =(this.teethWidth/4)+this.teethWidth*2*i-this.teethWidth
        this.gear_Ry3 =-this.RlineY
 
-      quad(this.gear_Rx0*mul_petal,this.gear_Ry0*mul_petal,this.gear_Rx1*mul_petal,this.gear_Ry1*mul_petal,this.gear_Rx2*mul_petal,this.gear_Ry2*mul_petal,this.gear_Rx3*mul_petal,this.gear_Ry3*mul_petal)
+      quad(this.gear_Rx0,this.gear_Ry0,this.gear_Rx1,this.gear_Ry1,this.gear_Rx2,this.gear_Ry2,this.gear_Rx3,this.gear_Ry3)
     }
 
-    this.rack_Y_size = (this.numberOfTeeth*this.teethWidth*2)*mul_petal
-    this.rack_X_size = 70*mul_petal
+    this.rack_Y_size = this.numberOfTeeth*this.teethWidth*2
+    this.rack_X_size = 70
     this.rack_Xpos = (-3*this.teethWidth/4)-this.teethWidth
     this.rack_Ypos = -this.RlineY+this.teethHeight
 
@@ -234,10 +231,10 @@ function OpenClose(){
       this.gear_Rx3 =(this.teethWidth/4)+this.teethWidth*2*i-this.teethWidth
       this.gear_Ry3 =-this.RlineY
 
-      quad(this.gear_Rx0*mul_petal,this.gear_Ry0*mul_petal,this.gear_Rx1*mul_petal,this.gear_Ry1*mul_petal,this.gear_Rx2*mul_petal,this.gear_Ry2*mul_petal,this.gear_Rx3*mul_petal,this.gear_Ry3*mul_petal)
+      quad(this.gear_Rx0,this.gear_Ry0,this.gear_Rx1,this.gear_Ry1,this.gear_Rx2,this.gear_Ry2,this.gear_Rx3,this.gear_Ry3)
     }
-    this.rack_Y_size = (this.numberOfTeeth*this.teethWidth*2)*mul_petal
-    this.rack_X_size = 70*mul_petal
+    this.rack_Y_size = this.numberOfTeeth*this.teethWidth*2
+    this.rack_X_size = 70
     this.rack_Xpos = (-3*this.teethWidth/4)-this.teethWidth
     this.rack_Ypos = -this.RlineY+this.teethHeight
 
@@ -300,7 +297,7 @@ function OpenClose(){
     this.centerP_X = this.fy+centerPositionX_rack+fixed_up_x_adjust
 
     // Moving pivot Y
-    this.movingP_Y = (this.fx-this.dist_f+(this.rack_Y+this.teethWidth))*mul_petal+lower_Y2
+    this.movingP_Y = (this.fx-this.dist_f+(this.rack_Y+this.teethWidth))+lower_Y2
     fill(tempLinkage)
     noStroke()
     ellipse(this.centerP_X-this.bottom_w,this.movingP_Y,8,8) // LEFT
@@ -403,12 +400,12 @@ function OpenClose(){
 
 
     // here it makes all move
-    this.rack_Y = this.rack_Y-this.rack_change_apply*mul_petal
+    this.rack_Y = this.rack_Y-this.rack_change_apply
     this.rack_Y2 = this.rack_Y2-this.rack_change_apply*-1
 
   }
 
-  this.drawPinionGear = function(pair_petal,radius, centerPositionX, centerPositionY,motorType,mul_petal,render_petal){
+  this.drawPinionGear = function(pair_petal,radius, centerPositionX, centerPositionY,motorType,render_petal){
     this.numberOfTeeth=radius/4
     this.teethHeight=0.25*radius
     this.teethAngle=TWO_PI/this.numberOfTeeth
@@ -480,24 +477,22 @@ function OpenClose(){
       rotate(this.teethAngle)
       stroke(tempGear)
       strokeWeight(1)
-//      triangle(((-3*this.teethWidth/4)+2)*mul_petal, (-this.lineY+this.teethHeight)*mul_petal, (this.teethWidth/2)*mul_petal, (-this.lineY+this.teethHeight)*mul_petal, (-this.teethWidth/2)*mul_petal, (-this.lineY)*mul_petal)
-//      triangle(((this.teethWidth/4)+2)*mul_petal, -this.lineY*mul_petal, (-this.teethWidth/2)*mul_petal, -this.lineY*mul_petal, (this.teethWidth/2)*mul_petal, (-this.lineY+this.teethHeight)*mul_petal)
 
       triangle((-3*this.teethWidth/4)+2, -this.lineY+this.teethHeight, this.teethWidth/2, -this.lineY+this.teethHeight, -this.teethWidth/2, -this.lineY)
       triangle((this.teethWidth/4)+2, -this.lineY, -this.teethWidth/2, -this.lineY, this.teethWidth/2, -this.lineY+this.teethHeight)
       strokeWeight(2)
-      line((-this.teethWidth/2)*mul_petal, -this.lineY*mul_petal, (this.teethWidth/2)*mul_petal, (-this.lineY+this.teethHeight)*mul_petal)
+      line(-this.teethWidth/2, -this.lineY,this.teethWidth/2,-this.lineY+this.teethHeight)
     }
     //gearbody
     this.pinion_diameter = 2*(-this.lineY+this.teethHeight)
-    ellipse(0,0, this.pinion_diameter*mul_petal, this.pinion_diameter*mul_petal)
+    ellipse(0,0, this.pinion_diameter, this.pinion_diameter)
     fill(tempGear_center)
-    ellipse(0,0,20*mul_petal,20*mul_petal)
+    ellipse(0,0,20,20)
 
     pop()
 
     this.centerPositionX_rack = centerPositionX - this.radius*2 - this.teethHeight
-    this.drawRackGear(pair_petal,radius,this.centerPositionX_rack,centerPositionY-50, motorType,mul_petal)
+    this.drawRackGear(pair_petal,radius,this.centerPositionX_rack,centerPositionY-50, motorType)
   }
 
   this.init = function(){
@@ -566,14 +561,14 @@ function OpenClose(){
     text("F", 190,160)
   }
   // get functions
-  this.getA = function(){return this.dist_a*mul_petal;}
-  this.getB = function(){return this.dist_b*mul_petal;}
-  this.getC = function(){return this.dist_c*mul_petal;}
-  this.getD = function(){return this.dist_d*mul_petal;}
-  this.getE = function(){return this.dist_e*mul_petal;}
-  this.getF = function(){return this.dist_f*mul_petal;}
-  this.getX = function(){return this.x*mul_petal;}
-  this.getY = function(){return this.y*mul_petal;}
+  this.getA = function(){return this.dist_a;}
+  this.getB = function(){return this.dist_b;}
+  this.getC = function(){return this.dist_c;}
+  this.getD = function(){return this.dist_d;}
+  this.getE = function(){return this.dist_e;}
+  this.getF = function(){return this.dist_f;}
+  this.getX = function(){return this.x;}
+  this.getY = function(){return this.y;}
 
   this.setA = function(newA){
     this.dist_a = newA

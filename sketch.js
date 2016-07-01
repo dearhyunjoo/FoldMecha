@@ -36,7 +36,6 @@ var bgcolor1, bgcolor2
     ,motorType_planet
     ,motor_embed_wing
     ,motor_embed_OP
-    ,mul_petal = 1 // zoom in-out
     ,render_petal = 0 // gear + linkages: 0, gears only: 1, linkages only: 2
 
 function setup() {
@@ -117,9 +116,7 @@ function draw() {
 
   else if (pageMode == open_close){ //mode 1
 
-//    render_petal = 0
-
-    Flower3.compGear(petalX,petalY,pair_petal,gearSize_petal,motorType_petal,mul_petal,render_petal)
+    Flower3.compGear(petalX,petalY,pair_petal,gearSize_petal,motorType_petal,render_petal)
 
     Panel.initUI()
 
