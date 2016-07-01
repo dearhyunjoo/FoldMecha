@@ -1,4 +1,4 @@
-# Related Works
+#Related Works
 [Modular Design Principles] (http://www.mcs.anl.gov/~itf/dbpp/text/node40.html)
 
 # Code Cleaning & Refactoring To do
@@ -13,3 +13,5 @@ my sketch ui should be redesigned as suggested
 slider value updates should be stabilized
 
 _this.currentModule == pageMode
+
+##test
