@@ -814,7 +814,7 @@ function UI(){
     _this.Btn_reset.show().size(150,20).position(60,520)
     _this.Btn_plt.hide() // for may 2016 workshop
     _this.Btn_net.show().size(150,20).position(60,545)
-    _this.Btn_my.show().size(150,20).position(60,590)
+  //  _this.Btn_my.show().size(150,20).position(60,590)
   //  _this.Btn_back.show().size(150,20).position(60.590)
     _this.Btn_home.show().size(150,20).position(60,615)
 
@@ -904,7 +904,7 @@ function UI(){
 //    _this.Btn_plt.show().size(150,20).position(60,520)
     _this.Btn_plt.hide() // for May 2016 workshop
     _this.Btn_net.show().size(150,20).position(60,545)
-    _this.Btn_my.show().size(150,20).position(60,590)
+  //  _this.Btn_my.show().size(150,20).position(60,590)
 //    _this.Btn_back.show().size(150,20).position(60.590)
     _this.Btn_home.show().size(150,20).position(60,615)
 
@@ -957,7 +957,7 @@ this.button_Planet = function(){
 //  _this.Btn_plt.show().size(150,20).position(60,520)
   _this.Btn_plt.hide()// for May workshop
   _this.Btn_net.show().size(150,20).position(60,545)
-  _this.Btn_my.show().size(150,20).position(60,590)
+//  _this.Btn_my.show().size(150,20).position(60,590)
   _this.Btn_home.show().size(150,20).position(60,615)
 
   _this.Btn_pdf.hide()
@@ -1000,7 +1000,7 @@ this.button_Planet = function(){
     _this.Btn_reset.show().size(150,20).position(60,495)
     _this.Btn_plt.show().size(150,20).position(60,520)
     _this.Btn_net.show().size(150,20).position(60,545)
-    _this.Btn_my.show().size(150,20).position(60,590)
+  //  _this.Btn_my.show().size(150,20).position(60,590)
     _this.Btn_home.show().size(150,20).position(60,615)
 
     _this.Btn_pdf.hide()
