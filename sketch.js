@@ -23,7 +23,7 @@ var bgcolor1, bgcolor2
     ,gearSize_wing
     ,motorType_wing
     ,UI_wing
-    ,wingX = 0
+    ,wingX = -40
     ,wingY = 0
     ,pair_leg
     ,add_leg
@@ -37,6 +37,7 @@ var bgcolor1, bgcolor2
     ,motor_embed_wing
     ,motor_embed_OP
     ,render_petal = 0 // gear + linkages: 0, gears only: 1, linkages only: 2
+    ,render_wing = 0
 
 function setup() {
 
@@ -49,6 +50,7 @@ function setup() {
   grey = color(150)
   white = color(255)
   black = color(0)
+  remove = color(255,255,255,0)
   colorsend_1 = color(255,0,0)
   colorsend_2 = color(200,0,255)
   colorsend_3 = color(50,200,200)
@@ -134,15 +136,10 @@ function draw() {
     Flower3.drawNet(gearSize_petal, motorType_petal,OP_map_page,thick_petal,motor_embed_OP)
 
   } else if (pageMode == flapping){ //mode 3
-    // //this must be change by button trigger --> get return current mirroring status
-    wingX = 0
-    wingY = 0
-
-    Bird1.compBird(wingX,wingY,gearSize_wing, motorType_wing)
 
     push()
     scale(1 + Panel.birdScale*0.1) //response to +/- scaling
-    Bird1.compBird(wingX,wingY,gearSize_wing_R, gearSize_wing, motorType_wing)
+    Bird1.compBird(wingX,wingY,gearSize_wing_R, gearSize_wing, motorType_wing,render_wing)
     pop()
 
     Panel.initUI()
@@ -155,7 +152,7 @@ function draw() {
     Panel.initUI_net()
     Panel.putText_Flapping_net(Flapping_map_page)
 
-    Bird1.drawNet(pair_wing,gearSize_wing,Flapping_map_page,thick_wing,gearType_wing,motor_embed_wing)
+    Bird1.drawNet(gearSize_wing,Flapping_map_page,thick_wing,gearType_wing,motor_embed_wing)
 
  }else if (pageMode == walking){ //mode 5
 
@@ -458,23 +455,7 @@ if (pageMode == 7) { //circling
     }else if (mouseX>1140 && mouseX<1165 && mouseY>560 && mouseY<595){
       OP_map_page = 3
     }
-    if (OP_map_page == 2){
-      if (mouseX>475 && mouseX<520 && mouseY>567 && mouseY<585){
-        motor_embed_OP = 1  // apply
-      }else if (mouseX>540 && mouseX<592 && mouseY>567 && mouseY<585){
-        motor_embed_OP = 0  // cancel
-      }
-    }else if (OP_map_page == 3){// linkage thickness
-      if (mouseX>455 && mouseX<477 && mouseY>567 && mouseY<584){
-        thick_petal = 1
-      }else if (mouseX>490 && mouseX<512 && mouseY>567 && mouseY<584){
-        thick_petal = 2
-      }else if (mouseX>525 && mouseX<547 && mouseY>567 && mouseY<584){
-        thick_petal = 3
-      }else if (mouseX>560 && mouseX<582 && mouseY>567 && mouseY<584){
-        thick_petal = 4
-      }
-    }
+
  }
 
   if (pageMode == 4){
@@ -494,22 +475,6 @@ if (pageMode == 7) { //circling
     }else if (mouseX>1140 && mouseX<1165 && mouseY>560 && mouseY<595){
       Flapping_map_page = 3
     }
-    if(Flapping_map_page == 2){// MOTOR EMBED
-      if (mouseX>475 && mouseX<520 && mouseY>567 && mouseY<585){
-        motor_embed_wing = 1  // apply
-      }else if (mouseX>540 && mouseX<592 && mouseY>567 && mouseY<585){
-        motor_embed_wing = 0  // cancel
-      }
-    }else if(Flapping_map_page == 3){// linkage thickness
-      if (mouseX>455 && mouseX<477 && mouseY>567 && mouseY<584){
-        thick_wing = 1
-      }else if (mouseX>490 && mouseX<512 && mouseY>567 && mouseY<584){
-        thick_wing = 2
-      }else if (mouseX>525 && mouseX<547 && mouseY>567 && mouseY<584){
-        thick_wing = 3
-      }else if (mouseX>560 && mouseX<582 && mouseY>567 && mouseY<584){
-        thick_wing = 4
-      }
-    }
+
   }
 }

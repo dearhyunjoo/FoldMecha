@@ -562,21 +562,12 @@ function OpenClose(){
 
   this.drawNet = function(gearSize,motor_status,OP_map_page,OPthick,motor_embed){
     var radiusN = 8*(5+gearSize)
-    if (motor_status == 180){
-      this.TN = 1
-    }else if (motor_status == 360){
-      this.TN = 2/3
-    }
+    if (motor_status == 180){this.TN = 1}
+    else if (motor_status == 360){this.TN = 2/3}
 
-    if(OPthick == 1){
-      thickness = 45
-    }else if(OPthick == 2){
-      thickness = 60
-    }else if(OPthick == 3){
-      thickness = 75
-    }else if(OPthick == 4){
-      thickness = 90
-    }
+    if(OPthick == 1){thickness = 45}
+    else if(OPthick == 2){thickness = 60}
+    else if(OPthick == 3){thickness = 75}
 
     var gear_x0 = (-3*this.teethWidth/4)-2.5  // extend
     var gear_y0 = -this.lineY+this.teethHeight+1  // extend
@@ -670,27 +661,28 @@ function OpenClose(){
       translate(radiusN*2,-radiusN*5/2)
       this.numberOfTeethR = 15
       for (var i=0; i<this.numberOfTeethR; i=i+1.15){
-              var gear_Rx0 = (-3*this.teethWidth/4)+this.teethWidth*2*i-this.teethWidth  // extend
-              var gear_Ry0 = -this.RlineY+this.teethHeight  // extend
-              var gear_Rx1 = -this.teethWidth/2+this.teethWidth*2*i-this.teethWidth  // extend
-              var gear_Ry1 = -this.RlineY  // extend
-              var gear_Rx2 = (this.teethWidth/4)+this.teethWidth*2*i-this.teethWidth // drawing teeth
-              var gear_Ry2 = -this.RlineY // drawing teeth
-              var gear_Rx3 = this.teethWidth/2+this.teethWidth*2*i-this.teethWidth
-              var gear_Ry3 = -this.RlineY+this.teethHeight
-              var gear_Rx4 = (-3*this.teethWidth/4)+this.teethWidth*2*(i+1)-this.teethWidth+4
-              line(gear_Rx0,gear_Ry0,gear_Rx1,gear_Ry1)
-              line(gear_Rx1,gear_Ry1,gear_Rx2,gear_Ry2)
-              line(gear_Rx2,gear_Ry2,gear_Rx3,gear_Ry3)
-              line(gear_Rx3,gear_Ry3,gear_Rx4,gear_Ry3)
+          var gear_Rx0 = (-3*this.teethWidth/4)+this.teethWidth*2*i-this.teethWidth  // extend
+          var gear_Ry0 = -this.RlineY+this.teethHeight  // extend
+          var gear_Rx1 = -this.teethWidth/2+this.teethWidth*2*i-this.teethWidth  // extend
+          var gear_Ry1 = -this.RlineY  // extend
+          var gear_Rx2 = (this.teethWidth/4)+this.teethWidth*2*i-this.teethWidth // drawing teeth
+          var gear_Ry2 = -this.RlineY // drawing teeth
+          var gear_Rx3 = this.teethWidth/2+this.teethWidth*2*i-this.teethWidth
+          var gear_Ry3 = -this.RlineY+this.teethHeight
+          var gear_Rx4 = (-3*this.teethWidth/4)+this.teethWidth*2*(i+1)-this.teethWidth+4
+          line(gear_Rx0,gear_Ry0,gear_Rx1,gear_Ry1)
+          line(gear_Rx1,gear_Ry1,gear_Rx2,gear_Ry2)
+          line(gear_Rx2,gear_Ry2,gear_Rx3,gear_Ry3)
+          line(gear_Rx3,gear_Ry3,gear_Rx4,gear_Ry3)
       }
       this.rack_X_size = 70
       var rack_body_Lx1 = (-3*this.teethWidth/4)-this.teethWidth*2 // left top point X
       var rack_body_Ly1 = -this.RlineY+this.teethHeight // left top point Y
+      var rack_x_right = rack_body_Lx1+this.teethWidth*33+3 // right top point X
       line(rack_body_Lx1,rack_body_Ly1,rack_body_Lx1+this.teethWidth,rack_body_Ly1)
       line(rack_body_Lx1,rack_body_Ly1,rack_body_Lx1,rack_body_Ly1+this.rack_X_size)
-      line(rack_body_Lx1,rack_body_Ly1+this.rack_X_size,this.teethWidth+rack_body_Lx1+this.rack_Y_size+28,rack_body_Ly1+this.rack_X_size)
-      line(rack_body_Lx1+this.rack_Y_size+this.teethWidth+28,rack_body_Ly1+this.rack_X_size,this.teethWidth+rack_body_Lx1+this.rack_Y_size+28,rack_body_Ly1)
+      line(rack_x_right,rack_body_Ly1,rack_x_right,rack_body_Ly1+this.rack_X_size)
+      line(rack_body_Lx1,rack_body_Ly1+this.rack_X_size,rack_x_right,rack_body_Ly1+this.rack_X_size)
 
         // BOTTOM RACK GEAR
       translate(0,radiusN*3)
@@ -710,12 +702,10 @@ function OpenClose(){
               line(gear_Rx2,gear_Ry2,gear_Rx3,gear_Ry3)
               line(gear_Rx3,gear_Ry3,gear_Rx4,gear_Ry3)
       }
-      var rack_body_Lx1 = (-3*this.teethWidth/4)-this.teethWidth*2 // left top point X
-      var rack_body_Ly1 = -this.RlineY+this.teethHeight // left top point Y
-      line(rack_body_Lx1,rack_body_Ly1,rack_body_Lx1+this.teethWidth,rack_body_Ly1)
-      line(rack_body_Lx1,rack_body_Ly1,rack_body_Lx1,rack_body_Ly1+this.rack_X_size)
-      line(rack_body_Lx1,rack_body_Ly1+this.rack_X_size,this.teethWidth+rack_body_Lx1+this.rack_Y_size+28,rack_body_Ly1+this.rack_X_size)
-      line(rack_body_Lx1+this.rack_Y_size+this.teethWidth+28,rack_body_Ly1+this.rack_X_size,this.teethWidth+rack_body_Lx1+this.rack_Y_size+28,rack_body_Ly1)
+    line(rack_body_Lx1,rack_body_Ly1,rack_body_Lx1+this.teethWidth,rack_body_Ly1)
+    line(rack_body_Lx1,rack_body_Ly1,rack_body_Lx1,rack_body_Ly1+this.rack_X_size)
+    line(rack_x_right,rack_body_Ly1,rack_x_right,rack_body_Ly1+this.rack_X_size)
+    line(rack_body_Lx1,rack_body_Ly1+this.rack_X_size,rack_x_right,rack_body_Ly1+this.rack_X_size)
 
   } else if (OP_map_page == 2){
 
@@ -785,46 +775,45 @@ function OpenClose(){
 
       for(var i=stick_pos_Y; i<stick_pos_Y+thickness; i = i+5){
         line(stick_pos_X+30,i,stick_pos_X+30,i+2) // extra part
-        line(stick_pos_X+30+this.dist_b+this.dist_a,i,stick_pos_X+30+this.dist_b+this.dist_a,i+2)  // #2, dist_a
-        line(stick_pos_X+30+this.dist_b+this.dist_a+this.dist_c+this.dist_d,i,stick_pos_X+30+this.dist_b+this.dist_a+this.dist_c+this.dist_d,i+2) // #3, dist_c+d
       }// stick 1
-      for(var i=stick_pos_Y; i<stick_pos_Y+thickness; i = i+11){
+      for(var i=stick_pos_Y+1; i<stick_pos_Y+thickness; i = i+11){
         line(stick_pos_X+30+this.dist_b,i,stick_pos_X+30+this.dist_b,i+5) //  #1, dist_b
+        line(stick_pos_X+30+this.dist_b+this.dist_a,i,stick_pos_X+30+this.dist_b+this.dist_a,i+5)  // #2, dist_a
+        line(stick_pos_X+30+this.dist_b+this.dist_a+this.dist_c+this.dist_d,i,stick_pos_X+30+this.dist_b+this.dist_a+this.dist_c+this.dist_d,i+5) // #3, dist_c+d
       }// stick 1
-      for(var i =stick_pos_Y+stick_Y_gap+thickness; i<stick_pos_Y+stick_Y_gap+thickness*2; i = i+11){
-        line(stick_pos_X+this.dist_d,i,stick_pos_X+this.dist_d,i+5)
-      } // stick 2
+
       for(var i =stick_pos_Y+stick_Y_gap+thickness; i<stick_pos_Y+stick_Y_gap+thickness*2; i = i+5){
+        line(stick_pos_X+this.dist_d,i,stick_pos_X+this.dist_d,i+2)
         line(stick_pos_X+this.dist_d+this.dist_e,i,stick_pos_X+this.dist_d+this.dist_e,i+2)
       } // stick 2
  // holes for stick_pos_Y
       ellipse(stick_pos_X+30+this.dist_b+this.dist_a+this.dist_c+this.dist_d+thickness*2/5-2,stick_pos_Y+thickness*1/2,8,8)
-      ellipse(stick_pos_X+this.dist_d+this.dist_e+thickness*2/5-4,stick_pos_Y+stick_Y_gap+thickness+thickness*1/2,15,15)
+      ellipse(stick_pos_X+this.dist_d+this.dist_e+thickness*2/5-4,stick_pos_Y+stick_Y_gap+thickness+thickness*1/2,11,11)
+      ellipse(stick_pos_X+this.dist_d+this.dist_e+thickness*2/5-4,stick_pos_Y+stick_Y_gap+thickness+thickness*1/2,17,17)
       ellipse(stick_pos_X+this.dist_d+this.dist_e+thickness*3/5+7,stick_pos_Y+stick_Y_gap+thickness+thickness*1/2,8,8)
 //stick 3
       rect(stick_pos_X,stick_pos_Y+stick_Y_gap*2+thickness*2,30+this.dist_b+this.dist_a+this.dist_c+this.dist_d+thickness,thickness)
 //stick 4
       rect(stick_pos_X,stick_pos_Y+stick_Y_gap*3+thickness*3,this.dist_d+this.dist_e+thickness,thickness)
 
-      for(var i=stick_pos_Y+stick_Y_gap*2+thickness*2; i<stick_pos_Y+stick_Y_gap*2+thickness*3; i = i+11){
+      for(var i=stick_pos_Y+stick_Y_gap*2+thickness*2+1; i<stick_pos_Y+stick_Y_gap*2+thickness*3; i = i+11){
         line(stick_pos_X+thickness+this.dist_c+this.dist_d+this.dist_a,i,stick_pos_X+thickness+this.dist_c+this.dist_d+this.dist_a,i+5) //  #1, dist_b
+        line(stick_pos_X+thickness+this.dist_c+this.dist_d,i,stick_pos_X+thickness+this.dist_c+this.dist_d,i+5) // extra part
+        line(stick_pos_X+thickness+this.dist_c+this.dist_d+this.dist_a+this.dist_b,i,stick_pos_X+thickness+this.dist_c+this.dist_d+this.dist_a+this.dist_b,i+5) //  #1, dist_b
       } // stick3
       for(var i=stick_pos_Y+stick_Y_gap*2+thickness*2; i<stick_pos_Y+stick_Y_gap*2+thickness*3; i = i+5){
         line(stick_pos_X+thickness,i,stick_pos_X+thickness,i+2) // extra part
-        line(stick_pos_X+thickness+this.dist_c+this.dist_d,i,stick_pos_X+thickness+this.dist_c+this.dist_d,i+2) // extra part
-        line(stick_pos_X+thickness+this.dist_c+this.dist_d+this.dist_a+this.dist_b,i,stick_pos_X+thickness+this.dist_c+this.dist_d+this.dist_a+this.dist_b,i+2) //  #1, dist_b
       } // stick3
 
-      for(var i =stick_pos_Y+stick_Y_gap*3+thickness*3; i<stick_pos_Y+stick_Y_gap*3+thickness*4; i = i+11){
-        line(stick_pos_X+thickness+this.dist_e,i,stick_pos_X+thickness+this.dist_e,i+5)
-      } // stick 4
       for(var i =stick_pos_Y+stick_Y_gap*3+thickness*3; i<stick_pos_Y+stick_Y_gap*3+thickness*4; i = i+5){
         line(stick_pos_X+thickness,i,stick_pos_X+thickness,i+2)
+        line(stick_pos_X+thickness+this.dist_e,i,stick_pos_X+thickness+this.dist_e,i+2)
       } // stick 4
 
 // holes for stick_pos_Y
       ellipse(stick_pos_X+thickness*2/5-2,stick_pos_Y+stick_Y_gap*2+thickness*5/2,8,8)
-      ellipse(stick_pos_X+thickness*2/5-4,stick_pos_Y+stick_Y_gap*3+thickness*7/2,15,15)
+      ellipse(stick_pos_X+thickness*2/5-4,stick_pos_Y+stick_Y_gap*3+thickness*7/2,11,11)
+      ellipse(stick_pos_X+thickness*2/5-4,stick_pos_Y+stick_Y_gap*3+thickness*7/2,17,17)
       ellipse(stick_pos_X+thickness*3/5+7,stick_pos_Y+stick_Y_gap*3+thickness*7/2,8,8)
 
 // Instruction #
