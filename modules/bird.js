@@ -11,7 +11,6 @@ this.rotationAngle=0
 
 this.a = 0
 this.b = 0
-//*********
 
 this.angle_increase = 0.015
 this.minNumberOfTeeth=3
@@ -22,14 +21,17 @@ this.centergearY=height/2+80
 this.UI1_created = false
 this.noDraw = 0
 
+var tempGear = grey
+var tempLinkage = blue2
+var tempLinkage_center = black
 
 this.init = function(){
 
    this.t2 = new Turtle()
-   this.dist_a = 200
-   this.dist_b = 150
-   this.dist_d = 300
+   this.dist_a = 250
+   this.dist_b = 120
    this.dist_c = 100
+   this.dist_d = 300
    this.dist_e = 350
    this.dist_f = 380
 
@@ -146,10 +148,9 @@ this.init = function(){
      this.step3_x =acos(this.angle_cosine_x)
      this.angle_x =degrees(this.step3_x)
 
-     stroke(blue2)
+     stroke(tempLinkage)
+     fill(tempLinkage)
      line(this.pinion_Xdot,this.pinion_Ydot,this.b_x-centerPositionX,this.b_y-centerPositionY) // side f
-     noStroke()
-     fill(blue2)
      ellipse(this.pinion_Xdot,this.pinion_Ydot, 8,8) //moving pivot on gears
 
      pop()
@@ -160,16 +161,16 @@ this.init = function(){
      this.step3_f =acos(this.angle_cosine_f)
      this.angle_f =degrees(this.step3_f)
 
-     stroke(blue2)
+     stroke(tempLinkage)
+     fill(tempLinkage)
      line(this.a_x,this.a_y,this.d2_x,this.d2_y) // side c
-     noStroke()
-     fill(blue2)
      triangle(this.a_x, this.a_y, this.b_x, this.b_y, this.c_x, this.c_y) //side a,b,c
-     fill(0)
+     noStroke()
+     fill(tempLinkage_center)
      ellipse(this.d2_x,this.d2_y,8,8)
   }
 
-  this.compBird = function(startingX,startingY,gear_setting,gearSize_wing,motorType){
+  this.compBird = function(startingX,startingY,gear_setting,gearSize_wing,motorType,render_wing){
     //this.noDraw = x
     if (gear_setting == 1){
       this.motorA = this.driverM
@@ -193,6 +194,23 @@ this.init = function(){
       this.in_gear = this.radius-32
     }
 
+    if(render_wing == 0){ // Gears & Linkages
+      tempGear = grey
+      tempGear_center = black
+      tempLinkage = blue2
+      tempLinkage_center = black
+    }else if(render_wing == 1){ // only Gears
+      tempGear = grey
+      tempGear_center = black
+      tempLinkage = remove
+      tempLinkage_center = remove
+    }else if(render_wing == 2){ // only Linkages
+      tempGear = remove
+      tempGear_center = remove
+      tempLinkage = blue2
+      tempLinkage_center = black
+    }
+
     this.motor_status = motorType
 
     /* TO DRAW LEFT GEAR */
@@ -207,7 +225,6 @@ this.init = function(){
     this.rotationDirection = -1
     this.gear_status = this.motorB
     this.drawGear(this.radius, startingX,startingY, this.centerPositionX, this.centerPositionY, this.rotationDirection,this.gear_status,this.motor_status)
-
 
  }
 
@@ -253,21 +270,18 @@ this.init = function(){
       }
     }
 
-     fill(150)
+     fill(tempGear)
+     stroke(tempGear)
+
     for (var i=0; i<this.numberOfTeeth; i++)
     {
       rotate(this.teethAngle)
-      stroke(150)
-      strokeWeight(1)
       triangle((-3*this.teethWidth/4)+2, -this.lineY+this.teethHeight, this.teethWidth/2, -this.lineY+this.teethHeight, -this.teethWidth/2, -this.lineY)
       triangle((this.teethWidth/4)+2, -this.lineY, -this.teethWidth/2, -this.lineY, this.teethWidth/2, -this.lineY+this.teethHeight)
-      stroke(150)
-      strokeWeight(2)
       line(-this.teethWidth/2, -this.lineY, this.teethWidth/2, -this.lineY+this.teethHeight)
     }
     ellipse(0, 0, 2*(-this.lineY+this.teethHeight), 2*(-this.lineY+this.teethHeight)) //gear flesh
-
-    fill(0)//center
+    fill(tempGear_center)//center
     ellipse(0,0,20,20)
 
     pop()
@@ -375,9 +389,7 @@ this.init = function(){
     }
   }
 
-  this.drawNet = function(gearSize_wing,Flapping_map_page,Lthick,driver,motor_embed){
-//    var part = createCanvas(temp_windowWidth,temp_windowHeight-515)
-  //  this.a = pair_wing
+  this.drawNet = function(gearSize_wing,Flapping_map_page,thick_wing,driver,motor_embed){
     this.b = gearSize_wing
 
     var radiusN = 8*(5+gearSize_wing)
@@ -405,58 +417,6 @@ this.init = function(){
       stroke(0)
       fill(255)
 
-  /*    if(pair_wing == 0){
-
-        translate(100, 100)
-        for (var i=0; i<this.numberOfTeeth; i++){
-          rotate(this.teethAngle)
-          line (gear_x0, gear_y0, gear_x1, gear_y1) // extend
-          line (gear_x1, gear_y1, gear_x2, gear_y2) // drawing teeth
-          line (gear_x2, gear_y2, gear_x3, gear_y3) // drawing teeth
-          line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
-          line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
-        }
-        ellipse(0, 0, 20, 20) //gear center
-
-        translate(0, radiusN*5/2)
-        for (var i=0; i<this.numberOfTeeth; i++){
-          rotate(this.teethAngle)
-          line (gear_x0, gear_y0, gear_x1, gear_y1) // extend
-          line (gear_x1, gear_y1, gear_x2, gear_y2) // drawing teeth
-          line (gear_x2, gear_y2, gear_x3, gear_y3) // drawing teeth
-          line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
-          line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
-        }
-        ellipse(0, 0, 20, 20) //gear center
-        ellipse(0, radiusN-16,12,12)
-
-        translate(radiusN*3, -radiusN*3)
-        for(var i=1; i<7; i++){
-          ellipse(60*i-100,0,50,50)
-          ellipse(60*i-100,0,15,15)
-        }
-        ellipse(60*7-100,0,35,35)
-        ellipse(60*7-100,0,15,15)
-        ellipse(60*8-100,0,35,35)
-        ellipse(60*8-100,0,15,15)
-
-        ellipse(60*1-100,60,50,50)
-        ellipse(60*1-100+this.dist_f,60,50,50)
-        fill(255)
-        noStroke()
-        rect(60*1-100,60-25,this.dist_f,50)// 300 should be changed to dist_F
-        stroke(0)
-        line(60*1-100,60-25,60*1-100+this.dist_f,60-25)
-        line(60*1-100,60+25,60*1-100+this.dist_f,60+25)
-        ellipse(60*1-100,60,20,20)
-        ellipse(60*1-100+this.dist_f,60,20,20)
-
-  // case
-        translate(radiusN*2,-370-(gearSize_wing*10))
-        rect(0,0,280+(gearSize_wing*50),240+(gearSize_wing*30))
-
-      } else if(pair_wing == 1){
-
   // LEFT TOP
         translate(100, 100)
         for (var i=0; i<this.numberOfTeeth; i++)
@@ -468,7 +428,7 @@ this.init = function(){
           line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
           line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
         }
-        ellipse(0, 0, 20, 20) // Left gear center
+        ellipse(0, 0, 15, 15) // Left gear center
 
   // RIGHT UP
         translate(radiusN*3, 0)
@@ -480,8 +440,8 @@ this.init = function(){
           line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
           line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
         }
-        ellipse(0, 0, 20, 20) //Left Bottom gear center
-        ellipse(0, radiusN-16,12,12)
+        ellipse(0, 0, 15, 15) //Left Bottom gear center
+        ellipse(0, radiusN-16,10,10)
 
   // RIGHT BOTTOM
         translate(0, radiusN*5/2)
@@ -493,8 +453,8 @@ this.init = function(){
           line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
           line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
       }
-        ellipse(0, 0, 20, 20) //Right gear center
-        ellipse(0, radiusN-16,12,12)
+        ellipse(0, 0, 15, 15) //Right gear center
+        ellipse(0, radiusN-16,10,10)
   // LEFT BOTTOM
         translate(-radiusN*3, 0)
         for (var i=0; i<this.numberOfTeeth; i++){
@@ -506,44 +466,8 @@ this.init = function(){
           line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
         }
         noFill()
-        ellipse(0, 0, 20, 20) //Right gear center
+        ellipse(0, 0, 15, 15) //Right gear center
 
-  // TUBES
-  translate(radiusN*13/2, -radiusN*3)
-
-//        translate(0, -radiusN*5/2+320)
-        for(var i=-1; i<5; i++){
-          ellipse(60*i,0,50,50) // first line
-          ellipse(60*i,0,15,15)
-          ellipse(60*i,60,50,50) // second line
-          ellipse(60*i,60,15,15)
-        }
-        for(var i=5; i<7; i++){
-          ellipse(60*i,0,35,35) // first line
-          ellipse(60*i,0,15,15)
-          ellipse(60*i,60,35,35) // second line
-          ellipse(60*i,60,15,15)
-        }
-        ellipse(60*-1,120,50,50)
-        ellipse(60*-1+this.dist_f,120,50,50)
-        ellipse(60*-1,180,50,50)
-        ellipse(60*-1+this.dist_f,180,50,50)
-
-        stroke(255)
-        fill(255)
-        rect(60*-1,120-25,this.dist_f,50)// 300 should be changed to dist_F
-        rect(60*-1,180-25,this.dist_f,50)// 300 should be changed to dist_F
-        stroke(0)
-        noFill()
-        line(60*-1,120-25,60*-1+this.dist_f,120-25)
-        line(60*-1,120+25,60*-1+this.dist_f,120+25)
-        line(60*-1,180-25,60*-1+this.dist_f,180-25)
-        line(60*-1,180+25,60*-1+this.dist_f,180+25)
-        ellipse(60*-1,120,20,20)
-        ellipse(60*-1+this.dist_f,120,20,20)
-        ellipse(60*-1,180,20,20)
-        ellipse(60*-1+this.dist_f,180,20,20)
-      }*/
     }else if(Flapping_map_page == 2){
 
         var case_pos_X = 30
@@ -556,58 +480,92 @@ this.init = function(){
 
         noFill()
         stroke(0)
-
-        if(pair_wing == 0){
-          rect(case_pos_X,case_pos_Y,case_width*2/3,case_height)
-
-          if(motor_embed == 1){
-            ellipse(case_centerX-this.xx,case_pos_Y+locationY,10,10) // top LEFT
-            rect(case_centerX-(radiusN+this.teethHeight)-(2/3*115),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
+        rect(case_pos_X,case_pos_Y,case_width,case_height)
+        ellipse(case_centerX+this.xx,case_pos_Y+locationY,10,10) // top RIGHT
+        ellipse(case_centerX-this.xx,case_pos_Y+locationY,10,10) // top LEFT
+//
+        var stick_pos_Y = case_pos_Y+case_height+40
+        var stick_thick = 50
+        ellipse(case_pos_X+stick_thick/2,stick_pos_Y,stick_thick,stick_thick)
+        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y,stick_thick,stick_thick)
+        ellipse(case_pos_X+stick_thick/2,stick_pos_Y+60,stick_thick,stick_thick)
+        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60,stick_thick,stick_thick)
+        stroke(255)
+        fill(255)
+        rect(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2,this.dist_f+50,50)// 300 should be changed to dist_F
+        rect(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2+60,this.dist_f+50,50)// 300 should be changed to dist_F
+        stroke(0)
+        noFill()
+        line(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y-stick_thick/2)
+        line(case_pos_X+stick_thick/2,stick_pos_Y+stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+stick_thick/2)
+        line(case_pos_X+stick_thick/2,stick_pos_Y+60-stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60-stick_thick/2)
+        line(case_pos_X+stick_thick/2,stick_pos_Y+60+stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60+stick_thick/2)
+        ellipse(case_pos_X+stick_thick/2,stick_pos_Y,20,20)
+        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y,20,20)
+        ellipse(case_pos_X+stick_thick/2,stick_pos_Y+60,20,20)
+        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60,20,20)
+      //  ellipse(60*-1,180,20,20)
+      //  ellipse(60*-1+this.dist_f+50,180,20,20)
+//
+        if(motor_embed == 1){
+          if(driver == 1){ // EMBED MOTOR ON LEFT
+            rect(case_centerX-(radiusN+this.teethHeight)-(2/3*115-3),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
+            ellipse(case_centerX+(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear R
             fill(150)
             ellipse(case_centerX-(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear L*/
-
-          }else if(motor_embed == 0){
+          }else if(driver == 0){ // EMBED MOTOR ON RIGHT
             noFill()
-            ellipse(case_centerX-this.xx,case_pos_Y+locationY,10,10) // top LEFT
+            rect(case_centerX+(radiusN+this.teethHeight)-(2/3*115-3),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
             ellipse(case_centerX-(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear L*/
-
+            fill(150)
+            ellipse(case_centerX+(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear R
           }
+        }
 
-        } else if(pair_wing == 1){
-          rect(case_pos_X,case_pos_Y,case_width,case_height)
-          ellipse(case_centerX+this.xx,case_pos_Y+locationY,10,10) // top RIGHT
-          ellipse(case_centerX-this.xx,case_pos_Y+locationY,10,10) // top LEFT
+         translate(case_pos_X+case_width+100, case_pos_Y+30)
+         noFill()
+      //        translate(0, -radiusN*5/2+320)
+         for(var i=-1; i<7; i++){
+           ellipse(60*i,0,50,50) // first line
+           ellipse(60*i,0,15,15)
+           ellipse(60*i,60,50,50) // second line
+           ellipse(60*i,60,15,15)
+        }
+        ellipse(60*7-5,0,35,35) // smaller - first line
+        ellipse(60*7-5,0,10,10)
+        ellipse(60*7-5,60,35,35) // smaller - second line
+        ellipse(60*7-5,60,10,10)
 
-          if(motor_embed == 1){
-              if(driver == 1){ // EMBED MOTOR ON LEFT
-                rect(case_centerX-(radiusN+this.teethHeight)-(2/3*115-3),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
-                ellipse(case_centerX+(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear R
-                fill(150)
-                ellipse(case_centerX-(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear L*/
-              }else if(driver == 0){ // EMBED MOTOR ON RIGHT
-                noFill()
-                rect(case_centerX+(radiusN+this.teethHeight)-(2/3*115-3),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
-                ellipse(case_centerX-(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear L*/
-                fill(150)
-                ellipse(case_centerX+(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear R
-              }
-          }else if(motor_embed == 0){
-            noFill()
-            ellipse(case_centerX+(radiusN+(52/100*this.teethHeight)),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear R
-            ellipse(case_centerX-(radiusN+(52/100*this.teethHeight)),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear L*/
-          }
-       }
+/*
+        ellipse(60*-1,120,50,50)
+        ellipse(60*-1+this.dist_f+50,120,50,50)
+        ellipse(60*-1,180,50,50)
+        ellipse(60*-1+this.dist_f+50,180,50,50)
+
+        stroke(255)
+        fill(255)
+        rect(60*-1,120-25,this.dist_f+50,50)// 300 should be changed to dist_F
+        rect(60*-1,180-25,this.dist_f+50,50)// 300 should be changed to dist_F
+        stroke(0)
+        noFill()
+        line(60*-1,120-25,60*-1+this.dist_f+50,120-25)
+        line(60*-1,120+25,60*-1+this.dist_f+50,120+25)
+        line(60*-1,180-25,60*-1+this.dist_f+50,180-25)
+        line(60*-1,180+25,60*-1+this.dist_f+50,180+25)
+        ellipse(60*-1,120,20,20)
+        ellipse(60*-1+this.dist_f+50,120,20,20)
+        ellipse(60*-1,180,20,20)
+        ellipse(60*-1+this.dist_f+50,180,20,20)*/
 
     }else if (Flapping_map_page == 3){
   //    thickness = 70 // 50,70,90,110
-     if(Lthick == 1){
-      thickness = 45
-     }else if(Lthick == 2){
+
+     if(thick_wing == 1){
+      thickness = 44
+     }else if(thick_wing == 2){
       thickness = 60
-     }else if(Lthick == 3){
+     }else if(thick_wing == 3){
       thickness = 75
-     }else if(Lthick == 4){
-      thickness = 90
      }
 
      var stick_pos_Y = 35//20
@@ -630,7 +588,6 @@ this.init = function(){
         line(stick_pos_X+this.xx*2+this.dist_c+this.dist_b,i,stick_pos_X+this.xx*2+this.dist_c+this.dist_b,i+5)  // #3, dist_b
         line(stick_pos_X+this.xx*2+this.dist_c+this.dist_b+this.dist_a+30,i,stick_pos_X+this.xx*2+this.dist_c+this.dist_b+this.dist_a+30,i+5) // #5, extra
       }// stick 1
-
       for(var i=stick_pos_Y+stick_Y_gap+thickness; i<stick_pos_Y+stick_Y_gap+thickness*2; i = i+5){
         line(stick_pos_X+30,i,stick_pos_X+30,i+2) // #1. this.xx
         line(stick_pos_X+30+30+this.dist_d+this.dist_c,i,stick_pos_X+30+30+this.dist_d+this.dist_c,i+2) // #4, dist_a

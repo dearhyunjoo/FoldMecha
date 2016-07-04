@@ -15,12 +15,12 @@ function UI(){
                         // 5 Walker
                         // 7 Planetary
                         // 9 MySketch
-   var render_OP = createSelect()
-   render_OP.position(125,468).attribute('id','selectRender').hide()
-   render_OP.option('linkages + gears')
-   render_OP.option('gears only')
-   render_OP.option('linkages only')
-   render_OP.changed(render_OP_status)
+   var render = createSelect()
+   render.position(125,468).attribute('id','selectRender').hide()
+   render.option('linkages + gears')
+   render.option('gears only')
+   render.option('linkages only')
+   render.changed(render_status)
 
   this.mySavedSketch = [{}]
 
@@ -28,6 +28,7 @@ function UI(){
   this.currentServoAngle   = 180 // 180 or 360
   this.currentDrivingGear  = 0 // 0:left, 1:right
   this.currentPairing      = 0
+  this.currentThickSize    = 2
 
   this.master = 0 //linked module as parent
   this.slave  = 0 //linked module as child
@@ -36,7 +37,7 @@ function UI(){
   this.Mech_show  = createButton ('Show Mechanism')
   this.Mech_hide  = createButton ('Hide Mechanism')
   this.Btn_reset  = createButton ('Reset all').mousePressed(resetAll)
-  this.Btn_pdf    = createButton ('Download PNG')
+  this.Btn_pdf    = createButton ('Download Parts')
   this.Btn_back   = createButton ('Back to Simulation')
   this.Btn_plt    = createButton ('Save in My Palette').mousePressed(saveDesign)
   this.Btn_net    = createButton ('View the Parts').mousePressed(button_folding_net)
@@ -57,6 +58,9 @@ function UI(){
   this.size_2_R = createButton('2').mousePressed(setGearSize_R)
   this.size_3_R = createButton('3').mousePressed(setGearSize_R)
   this.size_4_R = createButton('4').mousePressed(setGearSize_R)
+  this.thick_1 = createButton('1').mousePressed(setThickSize)
+  this.thick_2 = createButton('2').mousePressed(setThickSize)
+  this.thick_3 = createButton('3').mousePressed(setThickSize)
 
   this.up = createButton('↑').mousePressed(moveCenter_up)
   this.down = createButton('↓').mousePressed(moveCenter_down)
@@ -66,10 +70,6 @@ function UI(){
   this.zoomIn = createButton('+').mousePressed(scale_zoomIn)
   this.zoomOut = createButton('-').mousePressed(scale_zoomOut)
 
-  this.thick_1 = createButton('1')
-  this.thick_2 = createButton('2')
-  this.thick_3 = createButton('3')
-  this.thick_4 = createButton('4')
   this.motor_apply = createButton('Apply')
   this.motor_cancel = createButton('Cancel')
 
@@ -80,12 +80,19 @@ function UI(){
   this.mtr180 = createButton('180°').mousePressed(setServoAngle)
   this.mtr360 = createButton('Continuous').mousePressed(setServoAngle)
 
-  this.A_slider = createSlider(0, 400, 150).size(100).position(20, 200).changed(sliderAUpdate)
-  this.B_slider = createSlider(0, 400, 250).size(100).position(140, 200).changed(sliderBUpdate)
-  this.C_slider = createSlider(0, 400, 200).size(100).position(20, 235).changed(sliderCUpdate)
-  this.D_slider = createSlider(0, 400, 150).size(100).position(140, 235).changed(sliderDUpdate)
-  this.E_slider = createSlider(0, 400, 300).size(100).position(20, 270).changed(sliderEUpdate)
-  this.F_slider = createSlider(0, 130, 70).size(100).position(140,270).changed(sliderFUpdate)
+  if(pageMode == 1) {
+    this.init_A = 100; this.init_B = 300; this.init_C = 100; this.init_D = 200; this.init_E = 250;
+    this.init_F = 70; this.init_minF = 0; this.init_maxF = 130
+  } else if(pageMode == 3){
+    this.init_A = 250; this.init_B = 120; this.init_C = 100; this.init_D = 300; this.init_E = 350;
+    this.init_F = 380; this.init_minF = 200; this.init_maxF = 500
+  }
+  this.A_slider = createSlider(0, 400, this.init_A).size(100).position(20, 200).changed(sliderAUpdate)
+  this.B_slider = createSlider(0, 400, this.init_B).size(100).position(140, 200).changed(sliderBUpdate)
+  this.C_slider = createSlider(0, 400, this.init_C).size(100).position(20, 235).changed(sliderCUpdate)
+  this.D_slider = createSlider(0, 400, this.init_D).size(100).position(140, 235).changed(sliderDUpdate)
+  this.E_slider = createSlider(0, 400, this.init_E).size(100).position(20, 270).changed(sliderEUpdate)
+  this.F_slider = createSlider(this.init_minF, this.init_maxF, this.init_F).size(100).position(140,270).changed(sliderFUpdate)
   this.G_slider = createSlider(0, 400, 150).size(100).position(140,270).changed(sliderGUpdate)
   this.X_slider = createSlider(0, 200, 20).size(100).position(20, 200).changed(sliderXUpdate)
   this.Y_slider = createSlider(0, 200, 40).size(100).position(140,200).changed(sliderYUpdate)
@@ -219,42 +226,28 @@ function UI(){
     else if(pageMode == 3){pair_wing = 0}
   }
   function moveCenter_right(){
-    if(pageMode == 1){
-      petalX = petalX+20
-      if(petalX >300){ petalX = 300}
-    }
-    else if(pageMode == 3){  }
+    if(pageMode == 1){petalX = petalX+20}
+    else if(pageMode == 3){wingX = wingX+20}
   }
   function moveCenter_left(){
-    if(pageMode == 1){
-      petalX = petalX-20
-      if(petalX <-300){ petalX = -300}
-    }
-    else if(pageMode == 3){  }
+    if(pageMode == 1){petalX = petalX-20}
+    else if(pageMode == 3){wingX = wingX-20}
   }
   function moveCenter_up(){
-    if(pageMode == 1){
-      petalY = petalY-20
-    }
-    else if(pageMode == 3){  }
+    if(pageMode == 1){petalY = petalY-20}
+    else if(pageMode == 3){wingY = wingY-20}
   }
   function moveCenter_down(){
-    if(pageMode == 1){
-      petalY = petalY+20
-          console.log("Y2:  "+lower_Y2)
-    }
-    else if(pageMode == 3){  }
+    if(pageMode == 1){petalY = petalY+20}
+    else if(pageMode == 3){wingY = wingY+20}
   }
   function moveCenter(){
-    if(pageMode == 1){
-      petalX = 0; petalY = 0
-    }
-    else if(pageMode == 3){  }
+    if(pageMode == 1){petalX = 0; petalY = 0}
+    else if(pageMode == 3){wingX = -40; wingY = 0}
   }
   function scale_zoomIn(){
     if(pageMode == 1){
       _this.flowerScale += 1
-      console.log(_this.flowerScale)
 
     }
     else if(pageMode == 3){
@@ -266,7 +259,7 @@ function UI(){
     if(pageMode == 1){
       if(_this.flowerScale > -4)
         _this.flowerScale -= 1
-        
+
       console.log(_this.flowerScale)
 
     }
@@ -274,37 +267,35 @@ function UI(){
       _this.birdScale -= 1
     }
   }
-  function render_OP_status(){
-    // var test = render_OP.value
+  function render_status(){
 
     var option = this.elt.value
     console.log(option)
 
-    if(option == "linkages + gears")
-      render_petal = 0
-    else if(option == "gears only")
-      render_petal = 1
-    else if(option == "linkages only")
-      render_petal = 2
+    if(option == "linkages + gears"){
+      if(pageMode == 1){render_petal = 0}
+      else if(pageMode == 3){render_wing = 0}
+    }else if(option == "gears only"){
+      if(pageMode == 1){render_petal = 1}
+      else if(pageMode == 3){render_wing = 1}
+    }else if(option == "linkages only"){
+      if(pageMode == 1){render_petal = 2}
+      else if(pageMode == 3){render_wing = 2}
+    }
 
-    console.log(render_petal);
-  //  console.log("TEST: "+'id')
-  /*  if ('id' == 0){
-      render_OP = 0
-    }else if ('id' == 1){
-      render_OP = 1
-    }*/
   }
   function resetAll(){
     // init left panel UI into default setting
     _this.currentGearSize     = 2 //default
     _this.currentServoAngle   = 180 // 180 or 360
     _this.currentPairing      = 0
+    _this.currentThickSize    = 2
 
     highlightMirroring(0)
     highlightGearSize(2) // default gear size  = 2
     highlightGearSize_R(2) // default gear size  = 2
     highlightServoAngle(180) //dafault
+    highlightThickness(2)
 
     if(pageMode == 1) {//OpenClose
       _this.A_slider.value(100)
@@ -313,7 +304,6 @@ function UI(){
       _this.D_slider.value(200)
       _this.E_slider.value(250)
       _this.F_slider.value(70)
-
       pair_petal = 0
       gearSize_petal = 2
       motorType_petal = 180
@@ -324,21 +314,18 @@ function UI(){
       _this.currentDrivingGear  = 0 // 0:left, 1:right
       highlightDrivingGear(0) //default: left(0)
 
-      _this.A_slider.value(200)
-      _this.B_slider.value(150)
-      _this.C_slider.value(300)
-      _this.D_slider.value(100)
+      _this.A_slider.value(250)
+      _this.B_slider.value(120)
+      _this.C_slider.value(100)
+      _this.D_slider.value(300)
       _this.E_slider.value(350)
       _this.F_slider.value(380)
-
-      _this.X_slider.value(20)
-      _this.Y_slider.value(40)
 
       pair_wing = 0
       gearType_wing = 1
       gearSize_wing = 2
       gearSize_wing_R = 2
-      motorType_wing = 360
+      motorType_wing = 180
 
       Bird1.init()
     } else if(pareMode == 5) {//walker
@@ -406,9 +393,9 @@ function UI(){
 
         highlightMirroring(stdSliderValue.wings.pair)
         highlightGearSize(stdSliderValue.wings.gearSize)
-        highlightGearSize_R(stdSliderValue.wings.gearSize_R)
+//        highlightGearSize_R(stdSliderValue.wings.gearSize_R)
         highlightServoAngle(stdSliderValue.wings.servoAngle)
-        highlightDrivingGear(stdSliderValue.wings.drivingGear)
+  //      highlightThickness(stdSliderValue.wings.thickness)
 
         delete uiSliderValue.openclose
       } else { //never opened
@@ -485,6 +472,20 @@ function UI(){
     console.log("R gear size = "+gearSize_R)
   }
 
+
+    function setThickSize(){
+      thickSize = parseInt(this.elt.innerHTML)
+      highlightThickness(thickSize)
+      _this.currentThickSize = parseInt(this.elt.innerHTML)
+
+      if(pageMode == 2){
+        thick_petal = thickSize
+      }else if(pageMode == 4){
+        thick_wing = thickSize
+      }
+
+    }
+
   function highlightMirroring(pair){
     if(pair == 1){
       _this.mirr_apply.style("background-color",blue)
@@ -548,22 +549,14 @@ function UI(){
        _this.thick_1.style("background-color",blue)
        _this.thick_2.style("background-color",white)
        _this.thick_3.style("background-color",white)
-       _this.thick_4.style("background-color",white)
      }else if(thickSize == 2){
        _this.thick_1.style("background-color",white)
        _this.thick_2.style("background-color",blue)
        _this.thick_3.style("background-color",white)
-       _this.thick_4.style("background-color",white)
      }else if(thickSize == 3){
        _this.thick_1.style("background-color",white)
        _this.thick_2.style("background-color",white)
        _this.thick_3.style("background-color",blue)
-       _this.thick_4.style("background-color",white)
-     }else if(thickSize == 4){
-       _this.thick_1.style("background-color",white)
-       _this.thick_2.style("background-color",white)
-       _this.thick_3.style("background-color",white)
-       _this.thick_4.style("background-color",blue)
      }
   }
 
@@ -736,7 +729,6 @@ function UI(){
     this.thick_1.hide()
     this.thick_2.hide()
     this.thick_3.hide()
-    this.thick_4.hide()
     this.Mech_show.hide()
     this.Mech_hide.hide()
     this.mirr_apply.hide()
@@ -744,7 +736,15 @@ function UI(){
     this.new_apply.hide()
     this.motor_apply.hide()
     this.motor_cancel.hide()
-    render_OP.hide()
+
+    this.up.hide()
+    this.down.hide()
+    this.left.hide()
+    this.right.hide()
+    this.center.hide()
+    this.zoomIn.hide()
+    this.zoomOut.hide()
+    render.hide()
 
     this.A_slider.hide()
     this.B_slider.hide()
@@ -815,6 +815,7 @@ function UI(){
     _this.Btn_plt.hide() // for may 2016 workshop
     _this.Btn_net.show().size(150,20).position(60,545)
     _this.Btn_my.show().size(150,20).position(60,590)
+  //  _this.Btn_back.show().size(150,20).position(60.590)
     _this.Btn_home.show().size(150,20).position(60,615)
 
     _this.up.show().position(1100,5).size(25,25)
@@ -825,12 +826,12 @@ function UI(){
 
     _this.zoomIn.show().position(1175,20).size(25,25)
     _this.zoomOut.show().position(1175,50).size(25,25)
-
-    render_OP.show()
+    render.show()
 
     _this.mtr_L.hide()
     _this.mtr_R.hide()
     _this.Btn_pdf.hide()
+//    _this.Btn_my.hide()
     _this.Btn_back.hide()
     _this.new_apply.hide()
     _this.size_1_R.hide()
@@ -846,27 +847,24 @@ function UI(){
     this.thick_1.hide()
     this.thick_2.hide()
     this.thick_3.hide()
-    this.thick_4.hide()
     this.ratio_1.hide()
     this.ratio_2.hide()
     this.ratio_3.hide()
     this.motor_apply.hide()
     this.motor_cancel.hide()
 
-
-    render_OP.changed(select_OP_render)
+    render.changed(select_OP_render)
 
     OpenClose()
     _this.currentModule = 1
 }// end of function btn_openClose()
 
   function select_OP_render(){
-    var render_setting_OP = render_OP.value()
-
+    var render_setting_OP = render.value()
   }
 
   function select_F_render(){
-    var render_setting_OP = render_OP.value()
+    var render_setting_F = render.value()
 
   }
 
@@ -892,31 +890,41 @@ function UI(){
     // _this.mtr180.show().position(50, 410)//.style("background-color",blue)
     // _this.mtr360.show().position(140, 410)//.style("background-color",white)
 
+    _this.up.show().position(1100,5).size(25,25)
+    _this.down.show().position(1100,65).size(25,25)
+    _this.left.show().position(1070,35).size(25,25)
+    _this.right.show().position(1130,35).size(25,25)
+    _this.center.show().position(1100,35).size(25,25)
+
+    _this.zoomIn.show().position(1175,20).size(25,25)
+    _this.zoomOut.show().position(1175,50).size(25,25)
+    render.show()
+
     _this.Btn_reset.show().size(150,20).position(60,520)
 //    _this.Btn_plt.show().size(150,20).position(60,520)
     _this.Btn_plt.hide() // for May 2016 workshop
     _this.Btn_net.show().size(150,20).position(60,545)
     _this.Btn_my.show().size(150,20).position(60,590)
+//    _this.Btn_back.show().size(150,20).position(60.590)
     _this.Btn_home.show().size(150,20).position(60,615)
-    render_OP.show()
 
     _this.Btn_pdf.hide()
     _this.Btn_back.hide()
+  //  _this.Btn_my.hide()
     _this.new_apply.hide()
     this.thick_1.hide()
     this.thick_2.hide()
     this.thick_3.hide()
-    this.thick_4.hide()
     this.ratio_1.hide()
     this.ratio_2.hide()
     this.ratio_3.hide()
     this.motor_apply.hide()
     this.motor_cancel.hide()
 
-_this.mirr_cancel.hide()
-_this.mirr_apply.hide()
+    _this.mirr_cancel.hide()
+    _this.mirr_apply.hide()
 
-render_OP.changed(select_OP_render)
+    render.changed(select_F_render)
 
     Wings()
     _this.currentModule = 3
@@ -960,7 +968,6 @@ this.button_Planet = function(){
   _this.thick_1.hide()
   _this.thick_2.hide()
   _this.thick_3.hide()
-  _this.thick_4.hide()
   _this.size_1.hide()
   _this.size_2.hide()
   _this.size_3.hide()
@@ -1001,7 +1008,6 @@ this.button_Planet = function(){
     _this.thick_1.hide()
     _this.thick_2.hide()
     _this.thick_3.hide()
-    _this.thick_4.hide()
 
     Walker()
     _this.currentModule = 5
@@ -1018,6 +1024,7 @@ this.button_Planet = function(){
     _this.mtr_L.hide()
     _this.mtr_R.hide()
     _this.Btn_reset.hide()
+    _this.Btn_my.hide()
     _this.Btn_plt.hide()
     _this.Btn_net.hide()
     _this.A_slider.hide()
@@ -1039,10 +1046,9 @@ this.button_Planet = function(){
     _this.thick_1.hide()
     _this.thick_2.hide()
     _this.thick_3.hide()
-    _this.thick_4.hide()
+    // _this.thick_4.hide()
     _this.motor_apply.hide()
     _this.motor_cancel.hide()
-
 
     _this.Btn_pdf.show().size(150,20).position(60,565)
     _this.Btn_back.show().size(150,20).position(60,590)
@@ -1116,6 +1122,14 @@ this.button_Planet = function(){
 
     fill(255)
     text("FOLDING NET  :  OPEN & CLOSE", 22, 540)
+    this.up.hide()
+    this.down.hide()
+    this.left.hide()
+    this.right.hide()
+    this.center.hide()
+    this.zoomIn.hide()
+    this.zoomOut.hide()
+    render.hide()
 
     if(OP_map_page == 1){
       stroke(0)
@@ -1130,6 +1144,13 @@ this.button_Planet = function(){
       text("2",1107,587)
       text("3",1147,587)
       textSize(15)
+
+      this.thick_1.hide()
+      this.thick_2.hide()
+      this.thick_3.hide()
+      this.motor_apply.hide()
+      this.motor_cancel.hide()
+
     }else if(OP_map_page == 2){
       stroke(0)
       fill(255)
@@ -1144,15 +1165,14 @@ this.button_Planet = function(){
       fill(255)
       text("2",1107,587)
       textSize(15)
-      fill(0)
-      text("Motor Implementation : ",300,580)
+      // fill(0)
+      // text("Motor Implementation : ",300,580)
 
       this.thick_1.hide()
       this.thick_2.hide()
       this.thick_3.hide()
-      this.thick_4.hide()
-      this.motor_apply.show().position(475,567)
-      this.motor_cancel.show().position(540,567)
+      // this.motor_apply.show().position(475,567)
+      // this.motor_cancel.show().position(540,567)
 
     }else if(OP_map_page == 3){
       stroke(0)
@@ -1174,9 +1194,9 @@ this.button_Planet = function(){
       _this.thick_1.show().position(455,567)
       _this.thick_2.show().position(490,567)
       _this.thick_3.show().position(525,567)
-      _this.thick_4.show().position(560,567)
       _this.motor_apply.hide()
       _this.motor_cancel.hide()
+
     }
   }
 
@@ -1196,7 +1216,6 @@ this.button_Planet = function(){
     text("Gear Size :", 20, 390)
     text("Motor Rotation Angle :", 20, 420)
     text("Rendering :", 20, 480)
-
 
     if(_this.UI_mode == 1){
       text("A", 25, 230)
@@ -1232,6 +1251,14 @@ this.putText_Planet = function(){
 
     fill(255)
     text("FOLDING NET  :  FLAPPING", 37, 540)
+    this.up.hide()
+    this.down.hide()
+    this.left.hide()
+    this.right.hide()
+    this.center.hide()
+    this.zoomIn.hide()
+    this.zoomOut.hide()
+    render.hide()
 
     if(Flapping_map_page == 1){
       stroke(0)
@@ -1246,6 +1273,12 @@ this.putText_Planet = function(){
       text("2",1107,587)
       text("3",1147,587)
       textSize(15)
+      this.thick_1.hide()
+      this.thick_2.hide()
+      this.thick_3.hide()
+      this.motor_apply.hide()
+      this.motor_cancel.hide()
+
     }else if(Flapping_map_page == 2){
       stroke(0)
       fill(255)
@@ -1260,15 +1293,15 @@ this.putText_Planet = function(){
       fill(255)
       text("2",1107,587)
       textSize(15)
-      fill(0)
-      text("Motor Implementation : ",300,580)
+      // fill(0)
+      // text("Motor Implementation : ",300,580)
 
       this.thick_1.hide()
       this.thick_2.hide()
       this.thick_3.hide()
-      this.thick_4.hide()
-      this.motor_apply.show().position(475,567)
-      this.motor_cancel.show().position(540,567)
+
+      // this.motor_apply.show().position(475,567)
+      // this.motor_cancel.show().position(540,567)
     }else if(Flapping_map_page == 3){
       stroke(0)
       fill(255)
@@ -1289,7 +1322,6 @@ this.putText_Planet = function(){
       _this.thick_1.show().position(455,567)
       _this.thick_2.show().position(490,567)
       _this.thick_3.show().position(525,567)
-      _this.thick_4.show().position(560,567)
       _this.motor_apply.hide()
       _this.motor_cancel.hide()
     }
