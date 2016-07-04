@@ -1,3 +1,6 @@
+var PDFDocument = require('pdfkit')
+// var doc = new PDFDocument()
+
 function OpenClose(){
 
   var _this = this
@@ -561,6 +564,7 @@ function OpenClose(){
   }
 
   this.drawNet = function(gearSize,motor_status,OP_map_page,OPthick,motor_embed){
+
     var radiusN = 8*(5+gearSize)
     if (motor_status == 180){
       this.TN = 1
@@ -718,7 +722,6 @@ function OpenClose(){
       line(rack_body_Lx1+this.rack_Y_size+this.teethWidth+28,rack_body_Ly1+this.rack_X_size,this.teethWidth+rack_body_Lx1+this.rack_Y_size+28,rack_body_Ly1)
 
   } else if (OP_map_page == 2){
-
       var case_pos_Y = 15
       if (this.TN == 1){
           noFill()
@@ -859,7 +862,27 @@ this.drawPNG = function(){
   noStroke()
   fill(255)
   rect(0,510,1200,150)
-  saveCanvas('parts_openclose','png')
+
+  // OP_map_page = 1
+  // saveCanvas('parts_openclose','png')
+  var i = 0;
+  saveFrames("out", "png", 1, 5, function(data){
+    OP_map_page++
+    _this.drawNet()
+    print(data)
+    saveCanvas(data)
+  });
+
+
+
+  // OP_map_page = 2
+  // // this.drawNet(gearSize,motor_status,2,OPthick,motor_embed)
+  // saveCanvas('case_openclose','png')
+  //
+  // OP_map_page = 3
+  // // this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
+  // saveCanvas('petal_openclose','png')
+
 }
 
   // get functions

@@ -444,7 +444,6 @@ if (pageMode == 7) { //circling
     if (mouseX>60 && mouseX<210 && mouseY>565 && mouseY<585){
       console.log(" DOWNLOAD PNG")
       Flower3.drawPNG()
-
     }
     if (mouseX>60 && mouseX<210 && mouseY>590 && mouseY<610){
     // back to the simulation
