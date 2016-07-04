@@ -445,7 +445,7 @@ if (pageMode == 7) { //circling
     if (mouseX>60 && mouseX<210 && mouseY>590 && mouseY<610){
     // back to the simulation
        pageMode = 1
-       Panel.initCurrentSelection(pageMode)
+    //   Panel.initCurrentSelection(pageMode) // reset all
     }
     if (mouseX>1060 && mouseX<1085 && mouseY>560 && mouseY<595){
       OP_map_page = 1
@@ -465,7 +465,7 @@ if (pageMode == 7) { //circling
     if (mouseX>60 && mouseX<210 && mouseY>590 && mouseY<610){
     // back to the simulation
        pageMode = 3
-       Panel.initCurrentSelection(pageMode)
+      // Panel.initCurrentSelection(pageMode)  // reset all
     }
     if (mouseX>1060 && mouseX<1085 && mouseY>560 && mouseY<595){
       Flapping_map_page = 1
