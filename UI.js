@@ -94,8 +94,10 @@ function UI(){
   this.E_slider = createSlider(0, 400, this.init_E).size(100).position(20, 270).changed(sliderEUpdate)
   this.F_slider = createSlider(this.init_minF, this.init_maxF, this.init_F).size(100).position(140,270).changed(sliderFUpdate)
   this.G_slider = createSlider(0, 400, 150).size(100).position(140,270).changed(sliderGUpdate)
-  this.X_slider = createSlider(0, 200, 20).size(100).position(20, 200).changed(sliderXUpdate)
-  this.Y_slider = createSlider(0, 200, 40).size(100).position(140,200).changed(sliderYUpdate)
+  this.X_slider = createSlider(0, 200, 20).size(100).position(20, 305).changed(sliderXUpdate)
+  this.Y_slider = createSlider(0, 200, 40).size(100).position(140,305).changed(sliderYUpdate)
+  // this.X_slider = createSlider(0, 200, 20).size(100).position(20, 200).changed(sliderXUpdate)
+  // this.Y_slider = createSlider(0, 200, 40).size(100).position(140,200).changed(sliderYUpdate)
 
   this.selectParent = [] //array
   // position for individual module
@@ -1217,7 +1219,16 @@ this.button_Planet = function(){
     text("Motor Rotation Angle :", 20, 420)
     text("Rendering :", 20, 480)
 
-    if(_this.UI_mode == 1){
+    text("A", 25, 230)
+    text("B", 145, 230)
+    text("C", 25, 265)
+    text("D", 145, 265)
+    text("E", 25, 300)
+    text("F", 145, 300)
+    text("G", 25, 335)
+    text("H", 145, 335)
+
+/*    if(_this.UI_mode == 1){
       text("A", 25, 230)
       text("B", 145, 230)
       text("C", 25, 265)
@@ -1227,7 +1238,7 @@ this.button_Planet = function(){
     } else if(_this.UI_mode == 2) {
       text("X", 25, 230)
       text("Y", 145, 230)
-    }
+    }*/
 } //EOF
 
 this.putText_Planet = function(){
@@ -1402,8 +1413,16 @@ this.putText_Planet = function(){
 
   function Wings(){
     var moduleObj = [{}] //empty json for wing
+    _this.A_slider.show()
+    _this.B_slider.show()
+    _this.C_slider.show()
+    _this.D_slider.show()
+    _this.E_slider.show()
+    _this.F_slider.show()
+    _this.X_slider.show()
+    _this.Y_slider.show()
 
-    if(_this.UI_mode == 1){
+  /*  if(_this.UI_mode == 1){
 
       _this.A_slider.show()
       _this.B_slider.show()
@@ -1428,7 +1447,7 @@ this.putText_Planet = function(){
 
       _this.X_slider.show()
       _this.Y_slider.show()
-    }
+    }*/
   }
 
     function Planet(){

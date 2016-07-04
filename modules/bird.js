@@ -372,8 +372,8 @@ this.init = function(){
       ellipse(37,-38,6,6)
       ellipse(37,-70,6,6)
 
-      text("X", 50, -77)
-      text("Y", 50, -50)
+      text("G", 50, -77) // previous X
+      text("H", 20, -50) // previous Y
 
       noFill()
       stroke(0)
