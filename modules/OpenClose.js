@@ -5,9 +5,11 @@ function OpenClose(){
 
   var _this = this
   this.lengthGap = 5
+
   this.savePart = false
   this.saveCase = false
   this.saveLink = false
+  var fileName = ""
 
   // 1~4 : gear size 1~4 with 180 servo, 5~8 with 360 servo, 9~12 paired
   this.rack_Y_reset1 = false
@@ -722,6 +724,9 @@ function OpenClose(){
 
       saveCanvas('parts_openclose','png')
       _this.savePart = false
+
+      _this.drawNet(gearSize,motor_status,2,OPthick,motor_embed)
+
     }
 
   } else if (OP_map_page == 2){
@@ -784,7 +789,10 @@ function OpenClose(){
 
       saveCanvas('case_openclose','png')
       _this.saveCase = false
+
+      _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
     }
+
   } else if (OP_map_page == 3){
       var stick_pos_Y = 35//20
       var stick_Y_gap = 18//20
@@ -872,7 +880,7 @@ function OpenClose(){
       fill(255)
       rect(0,510,1200,150)
 
-      saveCanvas('linkage_openclose','png')
+      saveCanvas(fileName + '_linkage_openclose','png')
       _this.saveLink = false
     }
   }
@@ -884,8 +892,10 @@ this.drawPNG = function(){
   rect(0,510,1200,150)
 
   // OP_map_page = 1
-  saveCanvas('parts_openclose','png')
+  fileName = window.prompt('Type your name to save the file: ')
+  saveCanvas(fileName + '_parts_openclose','png')
   var map_page = [1,2,3];
+
   // var delay = new p5.Delay()
 
   // saveFrames("out", "png", 10, 3, function(data){
@@ -913,8 +923,10 @@ this.drawPNG = function(){
   //   _this.drawNet()
   //   stop()
   // }
+
+
   map_page.forEach(function(index){
-    console.log("call_drawNet")
+    console.log("call_drawNet " + index)
 
     OP_map_page = index
 
@@ -928,29 +940,27 @@ this.drawPNG = function(){
 
     else if(index == 3){
       _this.saveLink = true
+
     }
+    // _this.drawNet(gearSize,motor_status,index,OPthick,motor_embed)
 
     _this.drawNet()
-    // console.log(_this.drawNet())
-    // if(_this.drawNet())
-      // saveCanvas('parts_openclose'+index,'png')
-    // redrawCanvas_cb(index, redraw, savePNG)
   });
 
 
 } //end of drawPNG
 
-// this.delay = function(ms) {
-//   var cur_d = new Date();
-//   var cur_ticks = cur_d.getTime();
-//   var ms_passed = 0;
-//   while(ms_passed < ms) {
-//     var d = new Date(); // Possible memory leak?
-//     var ticks = d.getTime();
-//     ms_passed = ticks - cur_ticks;
-//     // d = null; // Prevent memory leak?
-//   }
-// }
+this.delay = function(ms) {
+  var cur_d = new Date();
+  var cur_ticks = cur_d.getTime();
+  var ms_passed = 0;
+  while(ms_passed < ms) {
+    var d = new Date(); // Possible memory leak?
+    var ticks = d.getTime();
+    ms_passed = ticks - cur_ticks;
+    // d = null; // Prevent memory leak?
+  }
+}
 
   // get functions
   this.getA = function(){return this.dist_a;}
