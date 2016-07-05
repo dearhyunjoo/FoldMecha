@@ -470,8 +470,8 @@ this.init = function(){
 
     }else if(Flapping_map_page == 2){
 
-        var case_pos_X = 30
-        var case_width = radiusN*4+radiusN*4+this.teethHeight*3
+        var case_pos_X = 10
+        var case_width = radiusN*4+radiusN*3+this.teethHeight*3
         var case_centerX = case_pos_X+(1/2*case_width)
         var case_pos_Y = 20
         var locationY = 50
@@ -483,30 +483,7 @@ this.init = function(){
         rect(case_pos_X,case_pos_Y,case_width,case_height)
         ellipse(case_centerX+this.xx,case_pos_Y+locationY,10,10) // top RIGHT
         ellipse(case_centerX-this.xx,case_pos_Y+locationY,10,10) // top LEFT
-//
-        var stick_pos_Y = case_pos_Y+case_height+40
-        var stick_thick = 50
-        ellipse(case_pos_X+stick_thick/2,stick_pos_Y,stick_thick,stick_thick)
-        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y,stick_thick,stick_thick)
-        ellipse(case_pos_X+stick_thick/2,stick_pos_Y+60,stick_thick,stick_thick)
-        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60,stick_thick,stick_thick)
-        stroke(255)
-        fill(255)
-        rect(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2,this.dist_f+50,50)// 300 should be changed to dist_F
-        rect(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2+60,this.dist_f+50,50)// 300 should be changed to dist_F
-        stroke(0)
-        noFill()
-        line(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y-stick_thick/2)
-        line(case_pos_X+stick_thick/2,stick_pos_Y+stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+stick_thick/2)
-        line(case_pos_X+stick_thick/2,stick_pos_Y+60-stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60-stick_thick/2)
-        line(case_pos_X+stick_thick/2,stick_pos_Y+60+stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60+stick_thick/2)
-        ellipse(case_pos_X+stick_thick/2,stick_pos_Y,20,20)
-        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y,20,20)
-        ellipse(case_pos_X+stick_thick/2,stick_pos_Y+60,20,20)
-        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60,20,20)
-      //  ellipse(60*-1,180,20,20)
-      //  ellipse(60*-1+this.dist_f+50,180,20,20)
-//
+
         if(motor_embed == 1){
           if(driver == 1){ // EMBED MOTOR ON LEFT
             rect(case_centerX-(radiusN+this.teethHeight)-(2/3*115-3),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
@@ -536,26 +513,38 @@ this.init = function(){
         ellipse(60*7-5,60,35,35) // smaller - second line
         ellipse(60*7-5,60,10,10)
 
-/*
-        ellipse(60*-1,120,50,50)
-        ellipse(60*-1+this.dist_f+50,120,50,50)
-        ellipse(60*-1,180,50,50)
-        ellipse(60*-1+this.dist_f+50,180,50,50)
+// for floor adjustment of driven gear
+        ellipse(60*-1+this.radius/2,60+this.radius*3/2,this.radius*2-5, this.radius*2-5)
+        ellipse(60*-1+this.radius/2,60+this.radius*3/2,10, 10)
+        ellipse(60*-1+this.radius*5/2,60+this.radius*3/2,this.radius*2-5, this.radius*2-5)
+        ellipse(60*-1+this.radius*5/2,60+this.radius*3/2,10, 10)
+        ellipse(60*-1+this.radius*9/2,60+this.radius*3/2,this.radius*2-5, this.radius*2-5)
+        ellipse(60*-1+this.radius*9/2,60+this.radius*3/2,10, 10)
 
+//stick from here
+        // var stick_pos_Y = case_pos_Y+case_height+40
+        var stick_pos_Y = 60+this.radius*3
+        var stick_thick = 50
+        case_pos_X = -95
+        ellipse(case_pos_X+stick_thick/2,stick_pos_Y,stick_thick,stick_thick)
+        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y,stick_thick,stick_thick)
+        ellipse(case_pos_X+stick_thick/2,stick_pos_Y+60,stick_thick,stick_thick)
+        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60,stick_thick,stick_thick)
         stroke(255)
         fill(255)
-        rect(60*-1,120-25,this.dist_f+50,50)// 300 should be changed to dist_F
-        rect(60*-1,180-25,this.dist_f+50,50)// 300 should be changed to dist_F
+        rect(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2,this.dist_f+50,50)// 300 should be changed to dist_F
+        rect(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2+60,this.dist_f+50,50)// 300 should be changed to dist_F
         stroke(0)
         noFill()
-        line(60*-1,120-25,60*-1+this.dist_f+50,120-25)
-        line(60*-1,120+25,60*-1+this.dist_f+50,120+25)
-        line(60*-1,180-25,60*-1+this.dist_f+50,180-25)
-        line(60*-1,180+25,60*-1+this.dist_f+50,180+25)
-        ellipse(60*-1,120,20,20)
-        ellipse(60*-1+this.dist_f+50,120,20,20)
-        ellipse(60*-1,180,20,20)
-        ellipse(60*-1+this.dist_f+50,180,20,20)*/
+        line(case_pos_X+stick_thick/2,stick_pos_Y-stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y-stick_thick/2)
+        line(case_pos_X+stick_thick/2,stick_pos_Y+stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+stick_thick/2)
+        line(case_pos_X+stick_thick/2,stick_pos_Y+60-stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60-stick_thick/2)
+        line(case_pos_X+stick_thick/2,stick_pos_Y+60+stick_thick/2,case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60+stick_thick/2)
+        ellipse(case_pos_X+stick_thick/2,stick_pos_Y,20,20)
+        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y,20,20)
+        ellipse(case_pos_X+stick_thick/2,stick_pos_Y+60,20,20)
+        ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60,20,20)
+        
 
     }else if (Flapping_map_page == 3){
   //    thickness = 70 // 50,70,90,110
