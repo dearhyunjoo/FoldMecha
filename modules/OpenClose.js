@@ -5,6 +5,10 @@ function OpenClose(){
 
   var _this = this
   this.lengthGap = 5
+  this.savePart = false
+  this.saveCase = false
+  this.saveLink = false
+
   // 1~4 : gear size 1~4 with 180 servo, 5~8 with 360 servo, 9~12 paired
   this.rack_Y_reset1 = false
   this.rack_Y_reset2 = false
@@ -593,22 +597,22 @@ function OpenClose(){
     this.lineY=cos(this.teethAngle/2)*radiusN+this.teethHeight
 
    if(OP_map_page == 1){
-   if(this.TN == 1){   // 180 Motor
+     if(this.TN == 1){   // 180 Motor
 
-    stroke(0)
-    fill(255)
-    translate(radiusN*3/2, radiusN*3/2)
-// TOP PINION GEAR
-    for (var i=0; i<this.numberOfTeeth; i++){
-      rotate(this.teethAngle)
-      line (gear_x0, gear_y0, gear_x1, gear_y1) // extend
-      line (gear_x1, gear_y1, gear_x2, gear_y2) // drawing teeth
-      line (gear_x2, gear_y2, gear_x3, gear_y3) // drawing teeth
-      line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
-      line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
-    }
-    ellipse(0, 0, 20, 20) //gear center
-    translate(0, radiusN*5/2)
+      stroke(0)
+      fill(255)
+      translate(radiusN*3/2, radiusN*3/2)
+  // TOP PINION GEAR
+      for (var i=0; i<this.numberOfTeeth; i++){
+        rotate(this.teethAngle)
+        line (gear_x0, gear_y0, gear_x1, gear_y1) // extend
+        line (gear_x1, gear_y1, gear_x2, gear_y2) // drawing teeth
+        line (gear_x2, gear_y2, gear_x3, gear_y3) // drawing teeth
+        line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
+        line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
+      }
+      ellipse(0, 0, 20, 20) //gear center
+      translate(0, radiusN*5/2)
 // BOTTOM PINION GEAR
       for (var i=0; i<this.numberOfTeeth; i++){
         rotate(this.teethAngle)
@@ -711,6 +715,15 @@ function OpenClose(){
     line(rack_x_right,rack_body_Ly1,rack_x_right,rack_body_Ly1+this.rack_X_size)
     line(rack_body_Lx1,rack_body_Ly1+this.rack_X_size,rack_x_right,rack_body_Ly1+this.rack_X_size)
 
+    if(_this.savePart == true){
+      noStroke()
+      fill(255)
+      rect(0,510,1200,150)
+
+      saveCanvas('parts_openclose','png')
+      _this.savePart = false
+    }
+
   } else if (OP_map_page == 2){
       var case_pos_Y = 15
       if (this.TN == 1){
@@ -764,6 +777,14 @@ function OpenClose(){
       }
     }
 
+    if(_this.saveCase == true){
+      noStroke()
+      fill(255)
+      rect(0,510,1200,150)
+
+      saveCanvas('case_openclose','png')
+      _this.saveCase = false
+    }
   } else if (OP_map_page == 3){
       var stick_pos_Y = 35//20
       var stick_Y_gap = 18//20
@@ -845,7 +866,17 @@ function OpenClose(){
       text("7", stick_pos_X+(1/2*thickness), stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
 /*      }else if(this.pair_petal == 0){}// Or, only one side
   }*/
-}}
+
+    if(_this.saveLink == true){
+      noStroke()
+      fill(255)
+      rect(0,510,1200,150)
+
+      saveCanvas('linkage_openclose','png')
+      _this.saveLink = false
+    }
+  }
+}
 
 this.drawPNG = function(){
   noStroke()
@@ -853,26 +884,73 @@ this.drawPNG = function(){
   rect(0,510,1200,150)
 
   // OP_map_page = 1
-  // saveCanvas('parts_openclose','png')
-  var i = 0;
-  saveFrames("out", "png", 1, 5, function(data){
-    OP_map_page++
+  saveCanvas('parts_openclose','png')
+  var map_page = [1,2,3];
+  // var delay = new p5.Delay()
+
+  // saveFrames("out", "png", 10, 3, function(data){
+  //
+  //   function savePNG(index){
+  //     saveCanvas(data, 'parts_openclose'+index,'png')
+  //   }
+  // });
+
+  // function savePNG(index){
+  //   saveCanvas('parts_openclose'+index,'png')
+  // }
+  //
+  // function redraw(index, callback){
+  //   // _this.drawNet()
+  //   callback(index)
+  // }
+  //
+  // function redrawCanvas_cb(index, callback, cb){
+  //   print("in redrawCanvas: " + index)
+  //   callback(index, cb)
+  // }
+  //
+  // function cb(){
+  //   _this.drawNet()
+  //   stop()
+  // }
+  map_page.forEach(function(index){
+    console.log("call_drawNet")
+
+    OP_map_page = index
+
+    if(index == 1){
+      _this.savePart = true
+    }
+
+    else if(index == 2){
+      _this.saveCase = true
+    }
+
+    else if(index == 3){
+      _this.saveLink = true
+    }
+
     _this.drawNet()
-    print(data)
-    saveCanvas(data)
+    // console.log(_this.drawNet())
+    // if(_this.drawNet())
+      // saveCanvas('parts_openclose'+index,'png')
+    // redrawCanvas_cb(index, redraw, savePNG)
   });
 
 
+} //end of drawPNG
 
-  // OP_map_page = 2
-  // // this.drawNet(gearSize,motor_status,2,OPthick,motor_embed)
-  // saveCanvas('case_openclose','png')
-  //
-  // OP_map_page = 3
-  // // this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
-  // saveCanvas('petal_openclose','png')
-
-}
+// this.delay = function(ms) {
+//   var cur_d = new Date();
+//   var cur_ticks = cur_d.getTime();
+//   var ms_passed = 0;
+//   while(ms_passed < ms) {
+//     var d = new Date(); // Possible memory leak?
+//     var ticks = d.getTime();
+//     ms_passed = ticks - cur_ticks;
+//     // d = null; // Prevent memory leak?
+//   }
+// }
 
   // get functions
   this.getA = function(){return this.dist_a;}
