@@ -1,4 +1,4 @@
-var PDFDocument = require('pdfkit')
+// var PDFDocument = require('pdfkit')
 // var doc = new PDFDocument()
 
 function OpenClose(){
@@ -924,6 +924,15 @@ this.drawPNG = function(){
   //   stop()
   // }
 
+  // var cb = _this.drawNet()
+  //
+  // function savePNG(map_page, callback){
+  //   map_page.forEach(function(index){
+  //     callback(index)
+  //   });
+  // }
+  //
+  // savePNG(map_page,cb)
 
   map_page.forEach(function(index){
     console.log("call_drawNet " + index)
@@ -940,9 +949,7 @@ this.drawPNG = function(){
 
     else if(index == 3){
       _this.saveLink = true
-
     }
-    // _this.drawNet(gearSize,motor_status,index,OPthick,motor_embed)
 
     _this.drawNet()
   });
