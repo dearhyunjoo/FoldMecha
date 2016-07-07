@@ -728,7 +728,7 @@ function OpenClose(){
     //
       saveCanvas(fileName+'parts_openclose','png')
       _this.savePart = false
-      // _this.drawNet(gearSize,motor_status,2,OPthick,motor_embed)
+      _this.drawNet(gearSize,motor_status,2,OPthick,motor_embed)
 
     }
 
@@ -804,7 +804,7 @@ function OpenClose(){
       saveCanvas(fileName+'case_openclose','png')
       _this.saveCase = false
 
-      // _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
+      _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
     }
 
       return true
@@ -897,8 +897,8 @@ function OpenClose(){
 
     if(_this.saveLink == true){
     //   noStroke()
-      // fill(255)
-    //   rect(0,510,1200,150)
+      fill(255)
+      rect(0,510,1200,150)
     //
       saveCanvas(fileName + '_linkage_openclose','png')
       _this.saveLink = false
@@ -916,7 +916,7 @@ this.drawPNG = function(){
 
   // OP_map_page = 1
   fileName = window.prompt('Type your name to save the file: ')
-  // saveCanvas(fileName + '_parts_openclose','png')
+  saveCanvas(fileName + '_parts_openclose','png')
   var map_page = [1,2,3];
   var title = ''
       ,type = 'png'
@@ -934,22 +934,22 @@ this.drawPNG = function(){
     if(index == 1){
       _this.savePart = true
       title = '_parts'
-      if(_this.drawNet() == true)
-        savePNG(saveCanvas, fileName, title, type)
+      // if(_this.drawNet() == true)
+      //   savePNG(saveCanvas, fileName, title, type)
     }
 
     if(index == 2){
       _this.saveCase = true
       title = '_case'
-      if(_this.drawNet() == true)
-        savePNG(saveCanvas, fileName, title, type)
+      // if(_this.drawNet() == true)
+      //   savePNG(saveCanvas, fileName, title, type)
     }
 
     if(index == 3){
       _this.saveLink = true
       title = '_linkage'
-      if(_this.drawNet() == true)
-        savePNG(saveCanvas, fileName, title, type)
+      // if(_this.drawNet() == true)
+      //   savePNG(saveCanvas, fileName, title, type)
     }
     // saveCanvas(fileName + '_parts_openclose','png')
 
