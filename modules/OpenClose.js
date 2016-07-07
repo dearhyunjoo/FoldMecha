@@ -788,16 +788,16 @@ function OpenClose(){
       }
     }*/
 
-    // if(_this.saveCase == true){
-    //   noStroke()
-    //   fill(255)
-    //   rect(0,510,1200,150)
-    //
-    //   saveCanvas('case_openclose','png')
-    //   _this.saveCase = false
-    //
-    //   _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
-    // }
+    if(_this.saveCase == true){
+      noStroke()
+      fill(255)
+      rect(0,510,1200,150)
+
+      saveCanvas('case_openclose','png')
+      _this.saveCase = false
+
+      _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
+    }
 
   } else if (OP_map_page == 3){
       var stick_pos_Y = 35//20
