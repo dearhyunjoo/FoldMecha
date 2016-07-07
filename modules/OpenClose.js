@@ -613,7 +613,7 @@ function OpenClose(){
         line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
         line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
       }
-      ellipse(0, 0, 20, 20) //gear center
+      ellipse(0, 0, 11, 11) //gear center
       translate(0, radiusN*5/2)
 // BOTTOM PINION GEAR
       for (var i=0; i<this.numberOfTeeth; i++){
@@ -624,7 +624,7 @@ function OpenClose(){
         line (gear_x3, gear_y3, gear_x4, gear_y4) // drawing teeth
         line (gear_x4, gear_y4, gear_x5, gear_y5) // extend
       }
-      ellipse(0, 0, 20, 20) //gear center
+      ellipse(0, 0, 11, 11) //gear center
 
 
     }else if(this.TN==2/3){ // 360 motor
@@ -643,7 +643,7 @@ function OpenClose(){
         line((this.teethWidth/4)+2, -this.lineY, this.teethWidth/2, -this.lineY+this.teethHeight)
         line(-this.teethWidth/2, -this.lineY,(this.teethWidth/4)+2, -this.lineY)
       }
-      ellipse(0,0,20,20) // center
+      ellipse(0,0,11,11) // center
 
       pop()
 
@@ -662,7 +662,7 @@ function OpenClose(){
         line((this.teethWidth/4)+2, -this.lineY, this.teethWidth/2, -this.lineY+this.teethHeight)
         line(-this.teethWidth/2, -this.lineY,(this.teethWidth/4)+2, -this.lineY)
       }
-      ellipse(0,0,20,20) // center
+      ellipse(0,0,11,11) // center
       pop()
 
       }
@@ -734,26 +734,32 @@ function OpenClose(){
       if (this.TN == 1){
           noFill()
           stroke(0)
-          rect(20,case_pos_Y,radiusN*8,radiusN*11/2)
+          rect(20,case_pos_Y,radiusN*8,radiusN*11/2) // body
 
     // BODY PARTS
-          rect(30+radiusN*8,case_pos_Y, radiusN*8,radiusN*2) // bottom layer
-          rect(30+radiusN*8,case_pos_Y+radiusN*2+5, radiusN*8,15) // boundary
-          rect(30+radiusN*8,case_pos_Y+radiusN*2+25, radiusN*8,15) // boundary
-          rect(30+radiusN*8,case_pos_Y+radiusN*2+45, radiusN*3,radiusN*2) // cover top
-          rect(35+radiusN*11,case_pos_Y+radiusN*2+45, radiusN*3,15) // cover top
-          rect(35+radiusN*11,case_pos_Y+radiusN*2+65, radiusN*3,15) // cover top
-          translate(radiusN*5,radiusN*2)
+          rect(30+radiusN*8,case_pos_Y, radiusN*8,radiusN*2) // bottom layer 1
+          rect(30+radiusN*8,case_pos_Y+radiusN*2+5, radiusN*8,radiusN*2) // bottom layer 2
+
+          rect(30+radiusN*8,case_pos_Y+radiusN*2+5+radiusN*2+5, radiusN*8,22) // boundary
+    //      rect(30+radiusN*8,case_pos_Y+radiusN*2+25, radiusN*8,15) // boundary
+          rect(30+radiusN*8,case_pos_Y+radiusN*2+5+radiusN*2+5+22+5, radiusN*2.3,radiusN*2.3) // cover top 1 - 45x45mm
+          rect(30+radiusN*8+radiusN*2.3+5,case_pos_Y+radiusN*2+5+radiusN*2+5+22+5, radiusN*2.3,radiusN*2.3) // cover top 2 - 45x45mm
+          rect(30+radiusN*8+radiusN*2.3+5+radiusN*2.3+5,case_pos_Y+radiusN*2+5+radiusN*2+5+22+5, radiusN*2.3,45) // cover leg 1 - 45x15mm
+          rect(30+radiusN*8+radiusN*2.3+5+radiusN*2.3+5,case_pos_Y+radiusN*2+5+radiusN*2+5+22+5+45+5, radiusN*2.3,45) // cover leg 2 - 45x15mm
+          // rect(35+radiusN*11,case_pos_Y+radiusN*2+45, radiusN*3,15) // cover top
+          // rect(35+radiusN*11,case_pos_Y+radiusN*2+65, radiusN*3,15) // cover top
+          translate(radiusN*4+20,radiusN*2)
 
           if (motor_embed == 0){
-            ellipse(0, 0, 10, 10) //motor center
+            ellipse(0, 0, 12, 12) //motor center
           }else if (motor_embed == 1){
-            rect(-(2/3*115),-(1/2*55),115,55) // to embed standard motor
+            rect(-(1/4*115),-(1/2*55),115,55) // to embed standard motor
             fill(150)
-            ellipse(0, 0, 10, 10) //motor center
+            ellipse(0, 0, 12, 12) //motor center
           }
 
-    }else if(this.TN == 2/3){
+    }
+  /*  else if(this.TN == 2/3){
       noFill()
       stroke(0)
 
@@ -780,18 +786,18 @@ function OpenClose(){
         fill(150)
         ellipse(0, 0, 10, 10) //motor center
       }
-    }
+    }*/
 
-    if(_this.saveCase == true){
-      noStroke()
-      fill(255)
-      rect(0,510,1200,150)
-
-      saveCanvas('case_openclose','png')
-      _this.saveCase = false
-
-      _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
-    }
+    // if(_this.saveCase == true){
+    //   noStroke()
+    //   fill(255)
+    //   rect(0,510,1200,150)
+    //
+    //   saveCanvas('case_openclose','png')
+    //   _this.saveCase = false
+    //
+    //   _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
+    // }
 
   } else if (OP_map_page == 3){
       var stick_pos_Y = 35//20
