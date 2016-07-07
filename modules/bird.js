@@ -481,21 +481,21 @@ this.init = function(){
         noFill()
         stroke(0)
         rect(case_pos_X,case_pos_Y,case_width,case_height)
-        ellipse(case_centerX+this.xx,case_pos_Y+locationY,10,10) // top RIGHT
-        ellipse(case_centerX-this.xx,case_pos_Y+locationY,10,10) // top LEFT
+        ellipse(case_centerX+this.xx,case_pos_Y+locationY,11,11) // top RIGHT
+        ellipse(case_centerX-this.xx,case_pos_Y+locationY,11,11) // top LEFT
 
         if(motor_embed == 1){
           if(driver == 1){ // EMBED MOTOR ON LEFT
-            rect(case_centerX-(radiusN+this.teethHeight)-(2/3*115-3),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
-            ellipse(case_centerX+(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,12,10) // CENTER for Gear R
+            rect(case_centerX-(radiusN+this.teethHeight/2)-(1/4*115-2),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
+            ellipse(case_centerX+(radiusN+this.teethHeight/2),case_pos_Y+locationY+dis_Y_gear,11,11) // CENTER for Gear R
             fill(150)
-            ellipse(case_centerX-(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear L*/
+            ellipse(case_centerX-(radiusN+this.teethHeight/2),case_pos_Y+locationY+dis_Y_gear,11,11) // CENTER for Gear L*/
           }else if(driver == 0){ // EMBED MOTOR ON RIGHT
             noFill()
-            rect(case_centerX+(radiusN+this.teethHeight)-(2/3*115-3),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
-            ellipse(case_centerX-(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear L*/
+            rect(case_centerX+(radiusN+this.teethHeight/2)-(2/3*115-2),case_pos_Y+locationY+dis_Y_gear-(1/2*55),115,55)
+            ellipse(case_centerX-(radiusN+this.teethHeight/2),case_pos_Y+locationY+dis_Y_gear,11,11) // CENTER for Gear L*/
             fill(150)
-            ellipse(case_centerX+(radiusN+this.teethHeight),case_pos_Y+locationY+dis_Y_gear,10,10) // CENTER for Gear R
+            ellipse(case_centerX+(radiusN+this.teethHeight/2),case_pos_Y+locationY+dis_Y_gear,11,11) // CENTER for Gear R
           }
         }
 
@@ -514,11 +514,11 @@ this.init = function(){
         ellipse(60*7-5,60,11,11)
 
 // for floor adjustment of driven gear
-        ellipse(60*-1+this.radius/2,60+this.radius*3/2,this.radius*2-10, this.radius*2-10)
+        ellipse(60*-1+this.radius/2,60+this.radius*3/2,this.radius*2-30, this.radius*2-30)
         ellipse(60*-1+this.radius/2,60+this.radius*3/2,11,11)
-        ellipse(60*-1+this.radius*5/2,60+this.radius*3/2,this.radius*2-10, this.radius*2-10)
+        ellipse(60*-1+this.radius*5/2,60+this.radius*3/2,this.radius*2-30, this.radius*2-30)
         ellipse(60*-1+this.radius*5/2,60+this.radius*3/2,11,11)
-        ellipse(60*-1+this.radius*9/2,60+this.radius*3/2,this.radius*2-10, this.radius*2-10)
+        ellipse(60*-1+this.radius*9/2,60+this.radius*3/2,this.radius*2-25, this.radius*2-25)
         ellipse(60*-1+this.radius*9/2,60+this.radius*3/2,11,11)
 
 //stick from here
