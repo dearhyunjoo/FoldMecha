@@ -599,6 +599,10 @@ function OpenClose(){
     this.lineY=cos(this.teethAngle/2)*radiusN+this.teethHeight
 
    if(OP_map_page == 1){
+
+    //  if(_this.savePart == true)
+    //   var canvasP = createCanvas(1200, 400);
+
      if(this.TN == 1){   // 180 Motor
 
       stroke(0)
@@ -718,18 +722,22 @@ function OpenClose(){
     line(rack_body_Lx1,rack_body_Ly1+this.rack_X_size,rack_x_right,rack_body_Ly1+this.rack_X_size)
 
     if(_this.savePart == true){
-      noStroke()
-      fill(255)
-      rect(0,510,1200,150)
-
-      saveCanvas('parts_openclose','png')
+    //   noStroke()
+    //   fill(255)
+    //   rect(0,510,1200,150)
+    //
+      saveCanvas(fileName+'parts_openclose','png')
       _this.savePart = false
-
-      _this.drawNet(gearSize,motor_status,2,OPthick,motor_embed)
+      // _this.drawNet(gearSize,motor_status,2,OPthick,motor_embed)
 
     }
 
+    return true
+
   } else if (OP_map_page == 2){
+    // if(_this.savePart == true)
+    //   var canvasC = createCanvas(1200, 400);
+
       var case_pos_Y = 15
       if (this.TN == 1){
           noFill()
@@ -783,17 +791,23 @@ function OpenClose(){
     }
 
     if(_this.saveCase == true){
-      noStroke()
-      fill(255)
-      rect(0,510,1200,150)
-
-      saveCanvas('case_openclose','png')
+    //   noStroke()
+    //   fill(255)
+    //   rect(0,510,1200,150)
+    //
+      saveCanvas(fileName+'case_openclose','png')
       _this.saveCase = false
 
-      _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
+      // _this.drawNet(gearSize,motor_status,3,OPthick,motor_embed)
     }
 
+      return true
+
   } else if (OP_map_page == 3){
+
+      // if(_this.savePart == true)
+      //   var canvasL = createCanvas(1200, 400);
+
       var stick_pos_Y = 35//20
       var stick_Y_gap = 18//20
       var stick_pos_X = 30//50
@@ -876,14 +890,17 @@ function OpenClose(){
   }*/
 
     if(_this.saveLink == true){
-      noStroke()
-      fill(255)
-      rect(0,510,1200,150)
-
+    //   noStroke()
+      // fill(255)
+    //   rect(0,510,1200,150)
+    //
       saveCanvas(fileName + '_linkage_openclose','png')
       _this.saveLink = false
     }
+
+      return true
   }
+
 }
 
 this.drawPNG = function(){
@@ -893,10 +910,10 @@ this.drawPNG = function(){
 
   // OP_map_page = 1
   fileName = window.prompt('Type your name to save the file: ')
-  saveCanvas(fileName + '_parts_openclose','png')
+  // saveCanvas(fileName + '_parts_openclose','png')
   var map_page = [1,2,3];
-
-  // var delay = new p5.Delay()
+  var title = ''
+      ,type = 'png'
 
   // saveFrames("out", "png", 10, 3, function(data){
   //
@@ -905,57 +922,39 @@ this.drawPNG = function(){
   //   }
   // });
 
-  // function savePNG(index){
-  //   saveCanvas('parts_openclose'+index,'png')
-  // }
-  //
-  // function redraw(index, callback){
-  //   // _this.drawNet()
-  //   callback(index)
-  // }
-  //
-  // function redrawCanvas_cb(index, callback, cb){
-  //   print("in redrawCanvas: " + index)
-  //   callback(index, cb)
-  // }
-  //
-  // function cb(){
-  //   _this.drawNet()
-  //   stop()
-  // }
-
-  // var cb = _this.drawNet()
-  //
-  // function savePNG(map_page, callback){
-  //   map_page.forEach(function(index){
-  //     callback(index)
-  //   });
-  // }
-  //
-  // savePNG(map_page,cb)
-
   map_page.forEach(function(index){
-    console.log("call_drawNet " + index)
-
     OP_map_page = index
 
     if(index == 1){
       _this.savePart = true
+      title = '_parts'
+      if(_this.drawNet() == true)
+        savePNG(saveCanvas, fileName, title, type)
     }
 
-    else if(index == 2){
+    if(index == 2){
       _this.saveCase = true
+      title = '_case'
+      if(_this.drawNet() == true)
+        savePNG(saveCanvas, fileName, title, type)
     }
 
-    else if(index == 3){
+    if(index == 3){
       _this.saveLink = true
+      title = '_linkage'
+      if(_this.drawNet() == true)
+        savePNG(saveCanvas, fileName, title, type)
     }
+    // saveCanvas(fileName + '_parts_openclose','png')
 
-    _this.drawNet()
   });
-
-
 } //end of drawPNG
+
+function savePNG(callback, cb, fileName, title, type){
+  // map_page.forEach(function(index){
+    callback(fileName + title, type)
+  // });
+}
 
 this.delay = function(ms) {
   var cur_d = new Date();
