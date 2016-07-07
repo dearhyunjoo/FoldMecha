@@ -890,7 +890,9 @@ function OpenClose(){
 
 this.drawPNG = function(){
 
-
+  noStroke()
+  fill(255)
+  rect(0,510,1200,150)
 
   var map_page = [1,2,3];
   var title = ''
@@ -900,10 +902,6 @@ this.drawPNG = function(){
 
   map_page.forEach(function(index){
     OP_map_page = index
-    
-    noStroke()
-    fill(255)
-    rect(0,510,1200,150)
 
     if(index == 1){
       _this.savePart = true
@@ -928,10 +926,6 @@ this.drawPNG = function(){
 
   });
 } //end of drawPNG
-
-// function savePNG(callback, fileName, title, type){
-//   callback(fileName + title, type)
-// }
 
 // this.delay = function(ms) {
 //   var cur_d = new Date();
