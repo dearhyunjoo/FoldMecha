@@ -19526,6 +19526,7 @@ p5.prototype.saveCanvas = function() {
   if (!cnv) {
     if (this._curElement && this._curElement.elt) {
       cnv = this._curElement.elt;
+      console.log(this._curElement.elt)
     }
   }
 
@@ -19537,7 +19538,7 @@ p5.prototype.saveCanvas = function() {
     alert(aText);
     window.location.href = cnv.toDataURL();
   } else {
-    var mimeType;
+    var mimeType, downloadMime;
     if (typeof(extension) === 'undefined') {
       extension = 'png';
       mimeType = 'image/png';
@@ -19546,19 +19547,27 @@ p5.prototype.saveCanvas = function() {
       switch(extension){
       case 'png':
         mimeType = 'image/png';
+        downloadMime = 'image/octet-stream';
         break;
       case 'jpeg':
         mimeType = 'image/jpeg';
+        downloadMime = 'image/octet-stream';
         break;
       case 'jpg':
         mimeType = 'image/jpeg';
+        downloadMime = 'image/octet-stream';
         break;
+      case 'pdf':
+        mimeType = 'application/pdf';
+        downloadMime = 'application/octet-stream';
       default:
         mimeType = 'image/png';
+        downloadMime = 'image/octet-stream';
         break;
       }
     }
-    var downloadMime = 'image/octet-stream';
+    // var downloadMime = 'image/octet-stream';
+
     var imageData = cnv.toDataURL(mimeType);
     imageData = imageData.replace(mimeType, downloadMime);
 
