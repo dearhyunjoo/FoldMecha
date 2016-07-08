@@ -1,5 +1,17 @@
 function Bird(){
 
+  var _this = this
+
+  this.savePart = false
+  this.saveCase = false
+  this.saveLink = false
+  var fileName = ""
+
+  this.gearSize_wing = 1
+  this.thick_wing = 2
+  this.driver = 1
+  this.motor_embed = 2
+
 this.driverM = color(0)
 this.drivenM = color(255)
 this.radius= 64
@@ -388,9 +400,14 @@ this.init = function(){
 
     }
   }
-
   this.drawNet = function(gearSize_wing,Flapping_map_page,thick_wing,driver,motor_embed){
-    this.b = gearSize_wing
+    // console.log(gearSize_wing,Flapping_map_page,thick_wing,driver,motor_embed)
+
+    // this.b = gearSize_wing
+    this.gearSize_wing = gearSize_wing
+    this.thick_wing = thick_wing
+    this.driver = driver
+    this.motor_embed = motor_embed
 
     var radiusN = 8*(5+gearSize_wing)
 
@@ -468,7 +485,10 @@ this.init = function(){
         noFill()
         ellipse(0, 0, 14, 14) //Right gear center
 
-    }else if(Flapping_map_page == 2){
+        return
+    }
+
+    if(Flapping_map_page == 2){
 
         var case_pos_X = 10
         var case_width = radiusN*4+radiusN*3+this.teethHeight*3
@@ -545,8 +565,10 @@ this.init = function(){
         ellipse(case_pos_X+stick_thick/2,stick_pos_Y+60,20,20)
         ellipse(case_pos_X+stick_thick/2+this.dist_f+50,stick_pos_Y+60,20,20)
 
+        return
+    }
 
-    }else if (Flapping_map_page == 3){
+    if (Flapping_map_page == 3){
   //    thickness = 70 // 50,70,90,110
 
      if(thick_wing == 1){
@@ -637,15 +659,49 @@ this.init = function(){
       text("6", stick_pos_X+this.xx*2+(1/2*this.dist_c), stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
       text("7", stick_pos_X+(1/2*this.xx*2), stick_pos_Y+stick_Y_gap*3+thickness*4+textY)
 
+      return
     }
 }
 
 this.drawPNG = function(){
+
   noStroke()
   fill(255)
   rect(0,510,1200,150)
-  saveCanvas('parts_flapping','png')
-}
+
+  var map_page = [1,2,3];
+  var title = ''
+      ,type = 'png'
+
+  fileName = window.prompt('Type your name to save the file: ')
+
+  map_page.forEach(function(index){
+    Flapping_map_page = index
+
+    if(index == 1){
+      _this.savePart = true
+      _this.drawNet(_this.gearSize_wing,1,_this.thick_wing,_this.driver,_this.motor_embed)
+      title = '_parts'
+    }
+
+    if(index == 2){
+      _this.saveCase = true
+      _this.drawNet(_this.gearSize_wing,2,_this.thick_wing,_this.driver,_this.motor_embed)
+      title = '_case'
+    }
+
+    if(index == 3){
+      _this.saveLink = true
+      _this.drawNet(_this.gearSize_wing,3,_this.thick_wing,_this.driver,_this.motor_embed)
+      title = '_linkage'
+    }
+    saveCanvas(fileName + title + '_flapping','png')
+
+  });
+
+  _this.drawNet()
+} //end of drawPNG
+
 // get functions
   this.getA = function(){return this.dist_a;}
   this.getB = function(){return this.dist_b;}
