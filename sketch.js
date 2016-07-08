@@ -130,6 +130,7 @@ function draw() {
     Panel.button_OpenClose()
 
   }else if (pageMode == open_close_net){ //mode 2
+
     Panel.initUI_net()
     Panel.putText_OpenClose_net(OP_map_page)
 

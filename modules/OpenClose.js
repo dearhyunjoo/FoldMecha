@@ -9,7 +9,7 @@ function OpenClose(){
   this.savePart = false
   this.saveCase = false
   this.saveLink = false
-  var fileName = ""
+  var fileName = "untitle"
 
   this.gearSize = 2
   this.motor_status = 180
@@ -742,7 +742,7 @@ function OpenClose(){
       var canvasC = createCanvas(1200, 500)
       fill(0)
       text(fileName, 50,400)
-    } 
+    }
 
       var case_pos_Y = 15
       if (this.TN == 1){

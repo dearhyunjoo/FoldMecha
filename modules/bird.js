@@ -5,7 +5,7 @@ function Bird(){
   this.savePart = false
   this.saveCase = false
   this.saveLink = false
-  var fileName = ""
+  var fileName = "untitle"
 
   this.gearSize_wing = 1
   this.thick_wing = 2
