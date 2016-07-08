@@ -611,8 +611,11 @@ function OpenClose(){
 
    if(OP_map_page == 1){
 
-     if(_this.savePart == true)
-      var canvasP = createCanvas(1200, 400);
+     if(_this.savePart == true){
+       var canvasP = createCanvas(1200, 500)
+       fill(0)
+       text(fileName, 50,400)
+   }
 
      if(this.TN == 1){   // 180 Motor
 
@@ -736,8 +739,11 @@ function OpenClose(){
 
   } if (OP_map_page == 2){
 
-    if(_this.savePart == true)
-      var canvasC = createCanvas(1200, 400);
+    if(_this.savePart == true){
+      var canvasC = createCanvas(1200, 500)
+      fill(0)
+      text(fileName, 50,400)
+    }
 
       var case_pos_Y = 15
       if (this.TN == 1){
@@ -800,8 +806,12 @@ function OpenClose(){
 
   } if (OP_map_page == 3){
 
-      if(_this.savePart == true)
-        var canvasL = createCanvas(1200, 400);
+      if(_this.savePart == true){
+        var canvasL = createCanvas(1200, 500)
+
+        fill(0)
+        text(fileName, 50,400)
+      }
 
       var stick_pos_Y = 35//20
       var stick_Y_gap = 18//20
@@ -913,18 +923,18 @@ this.drawPNG = function(){
       _this.saveCase = true
       _this.drawNet(_this.gearSize,_this.motor_status,2,_this.OPthick,_this.motor_embed)
       title = '_case'
-
     }
 
     if(index == 3){
       _this.saveLink = true
       _this.drawNet(_this.gearSize,_this.motor_status,3,_this.OPthick,_this.motor_embed)
       title = '_linkage'
-
     }
     saveCanvas(fileName + title + '_openclose','png')
 
   });
+
+  _this.drawNet()
 } //end of drawPNG
 
 // this.delay = function(ms) {
