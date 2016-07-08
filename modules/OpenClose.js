@@ -3,6 +3,7 @@
 
 function OpenClose(){
 
+  // var pdf
   var _this = this
   this.lengthGap = 5
 
@@ -612,6 +613,8 @@ function OpenClose(){
 
      if(_this.savePart == true){
        var canvasP = createCanvas(1200, 500)
+      //  pdf = createPDF()
+      //  pdf.beginRecord()
        fill(0)
        text(fileName, 50,400)
    }
@@ -929,6 +932,7 @@ this.drawPNG = function(){
       _this.drawNet(_this.gearSize,_this.motor_status,3,_this.OPthick,_this.motor_embed)
       title = '_linkage'
     }
+    // pdf.save()
     saveCanvas(fileName + title + '_openclose','png')
 
   });
