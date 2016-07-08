@@ -576,7 +576,6 @@ function OpenClose(){
   }
 
   this.drawNet = function(gearSize,motor_status,OP_map_page,OPthick,motor_embed){
-
     _this.gearSize = gearSize
     _this.motor_status = motor_status
     _this.OPthick = OPthick
@@ -739,11 +738,11 @@ function OpenClose(){
 
   } if (OP_map_page == 2){
 
-    if(_this.savePart == true){
+    if(_this.saveCase == true){
       var canvasC = createCanvas(1200, 500)
       fill(0)
       text(fileName, 50,400)
-    }
+    } 
 
       var case_pos_Y = 15
       if (this.TN == 1){
@@ -902,7 +901,7 @@ this.drawPNG = function(){
 
   noStroke()
   fill(255)
-  rect(0,510,1200,150)
+  // rect(0,510,1200,150)
 
   var map_page = [1,2,3];
   var title = ''
@@ -933,8 +932,8 @@ this.drawPNG = function(){
     saveCanvas(fileName + title + '_openclose','png')
 
   });
+  createCanvas(temp_windowWidth, temp_windowHeight)//.attribute('id','defaultCanvas')
 
-  _this.drawNet()
 } //end of drawPNG
 
 // this.delay = function(ms) {
