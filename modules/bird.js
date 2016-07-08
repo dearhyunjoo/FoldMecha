@@ -418,6 +418,12 @@ this.init = function(){
     this.lineY=cos(this.teethAngle/2)*radiusN+this.teethHeight
 
     if(Flapping_map_page == 1){
+
+      if(_this.savePart == true){
+        var canvasP = createCanvas(1200, 500)
+        text(fileName, 50,400)
+      }
+
       var gear_x0 = (-3*this.teethWidth/4)-2.5  // extend
       var gear_y0 = -this.lineY+this.teethHeight+1  // extend
       var gear_x1 = (-3*this.teethWidth/4)+2 // drawing teeth
@@ -489,6 +495,11 @@ this.init = function(){
     }
 
     if(Flapping_map_page == 2){
+
+      if(_this.saveCase == true){
+        var canvasC = createCanvas(1200, 500)
+        text(fileName, 50,400)
+      }
 
         var case_pos_X = 10
         var case_width = radiusN*4+radiusN*3+this.teethHeight*3
@@ -570,6 +581,11 @@ this.init = function(){
 
     if (Flapping_map_page == 3){
   //    thickness = 70 // 50,70,90,110
+      if(_this.saveLink == true){
+        var canvasL = createCanvas(1200, 500)
+        text(fileName, 50,400)
+
+      }
 
      if(thick_wing == 1){
       thickness = 44
